@@ -8,7 +8,7 @@ const HeadingText = ({ text, textStyles, ...props }) => {
     fontFamily: FONT.bold, 
     fontSize: moderateScale(24),
     lineHeight: moderateScale(24) * 1.3,
-    textAlign: "center", // Add default center text alignment
+    textAlign: "center",
   };
   
   return (
