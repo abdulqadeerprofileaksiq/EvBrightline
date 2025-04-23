@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { Text, View, SafeAreaView, Image, useWindowDimensions } from 'react-native';
+import { Text, View, SafeAreaView, Image, useWindowDimensions, StatusBar } from 'react-native';
 import { ScaledSheet, scale, verticalScale } from 'react-native-size-matters';
 import { COLOR } from '../../constants/colors';
 import Logo from "../../assets/images/EV_Logodark.png";
@@ -17,48 +17,51 @@ const Home = () => {
   const boxHeight = isLandscape ? height * 0.5 : Math.min(width * 0.9, height * 0.4);
 
   return (
-    <SafeAreaView style={styles.container}>
-      <View style={styles.headerSection}>
-        <View style={styles.header}>
-          <Image source={Logo} style={styles.logoImage} />
-          <Text style={styles.title}>EV - BRIGHTLINE</Text>
-          {/* Notification icon placeholder */}
-        </View>
-        <View style={styles.divider} />
+    <>
+      <StatusBar backgroundColor={COLOR.white} barStyle="dark-content" />
+      <SafeAreaView style={styles.container}>
+        <View style={styles.headerSection}>
+          <View style={styles.header}>
+            <Image source={Logo} style={styles.logoImage} />
+            <Text style={styles.title}>EV - BRIGHTLINE</Text>
+            {/* Notification icon placeholder */}
+          </View>
+          <View style={styles.divider} />
 
-        <View style={styles.welcomeSection}>
-          <Text style={styles.welcomeHeading}>Welcome John</Text>
-          <View style={[styles.infoBox, { width: boxWidth, height: boxHeight }]}>
-            <View style={styles.infoBoxHeader}>
-              <View>
-                <Text style={styles.carModel}>Tesla Model 3</Text>
-                <Text style={styles.licensePlate}>MM 4919 RGN</Text>
+          <View style={styles.welcomeSection}>
+            <Text style={styles.welcomeHeading}>Welcome John</Text>
+            <View style={[styles.infoBox, { width: boxWidth, height: boxHeight }]}>
+              <View style={styles.infoBoxHeader}>
+                <View>
+                  <Text style={styles.carModel}>Tesla Model 3</Text>
+                  <Text style={styles.licensePlate}>MM 4919 RGN</Text>
+                </View>
+                <Image source={CarVector} style={styles.carVector} resizeMode="contain" />
               </View>
-              <Image source={CarVector} style={styles.carVector} resizeMode="contain" />
-            </View>
-            <View style={styles.dividerHorizontal} />
-            <View style={styles.infoBoxContent}>
-              <View style={styles.chargingContainer}>
-                <Image
-                  source={CarCharging}
-                  style={styles.chargingImage}
-                  resizeMode="contain"
-                />
-              </View>
-              <View style={styles.textWrapper}>
-                <RegularText
-                  text="You have not visited any EV charging station yet."
-                  textStyles={styles.noVisitText}
-                  numberOfLines={2}
-                  adjustsFontSizeToFit
-                />
+              <View style={styles.dividerHorizontal} />
+              <View style={styles.infoBoxContent}>
+                <View style={styles.chargingContainer}>
+                  <Image
+                    source={CarCharging}
+                    style={styles.chargingImage}
+                    resizeMode="contain"
+                  />
+                </View>
+                <View style={styles.textWrapper}>
+                  <RegularText
+                    text="You have not visited any EV charging station yet."
+                    textStyles={styles.noVisitText}
+                    numberOfLines={2}
+                    adjustsFontSizeToFit
+                  />
+                </View>
               </View>
             </View>
           </View>
         </View>
-      </View>
-      <HomeBottomSheet onClose={() => setBottomSheetVisible(false)} />
-    </SafeAreaView>
+        <HomeBottomSheet onClose={() => setBottomSheetVisible(false)} />
+      </SafeAreaView>
+    </>
   );
 };
 

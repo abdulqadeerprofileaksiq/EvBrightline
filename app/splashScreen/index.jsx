@@ -1,5 +1,5 @@
 import React, { useEffect } from "react";
-import { View } from "react-native";
+import { View, StatusBar } from "react-native";
 import { useRouter } from "expo-router";
 import { ScaledSheet } from "react-native-size-matters";
 import Animated, { useSharedValue, useAnimatedStyle, withTiming } from "react-native-reanimated";
@@ -24,13 +24,16 @@ export default function SplashScreen() {
   }));
 
   return (
-    <View style={styles.container}>
-      <Animated.Image
-        source={require("../../assets/images/EV_Logo.png")}
-        style={[styles.logo, animatedStyle]}
-        resizeMode="contain"
-      />
-    </View>
+    <>
+      <StatusBar backgroundColor={COLOR.darkGray} barStyle="light-content" />
+      <View style={styles.container}>
+        <Animated.Image
+          source={require("../../assets/images/EV_Logo.png")}
+          style={[styles.logo, animatedStyle]}
+          resizeMode="contain"
+        />
+      </View>
+    </>
   );
 }
 

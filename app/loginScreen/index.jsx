@@ -1,15 +1,6 @@
 import React, { useState } from "react";
 import { useToast } from "../../context/toastContext/ToastContext";
-import {
-  View,
-  TouchableOpacity,
-  Image,
-  KeyboardAvoidingView,
-  Platform,
-  SafeAreaView,
-  ScrollView,
-  StyleSheet
-} from "react-native";
+import { View, Image, KeyboardAvoidingView, Platform, SafeAreaView, ScrollView, StyleSheet,TouchableOpacity } from "react-native";
 import { ScaledSheet } from "react-native-size-matters";
 import { COLOR } from "../../constants/colors";
 import HeadingText from "../../components/global/HeadingText";
@@ -56,14 +47,11 @@ const LoginScreen = () => {
           contentContainerStyle={styles.scrollViewContent}
           keyboardShouldPersistTaps="handled"
         >
-          <View style={styles.inner}>
+          <View style={styles.mainContentContainer}>
             <View style={styles.logoHeader}>
               <Image source={Logo} style={styles.logoImage} resizeMode="contain" />
             </View>
-            <HeadingText
-              text="Welcome! Glad to See You Again!"
-              textStyles={styles.heading}
-            />
+            <HeadingText text="Welcome! Glad to See You Again!" textStyles={styles.heading} />
             <View style={styles.formContainer}>
               <InputComponent
                 label="Username"
@@ -86,12 +74,9 @@ const LoginScreen = () => {
               />
               <TouchableOpacity
                 style={styles.forgotPasswordContainer}
-                onPress={() => router.navigate("/forgotPassword")}
+                onPress={() => router.navigate("/forgetPasswordScreen")}
               >
-                <RegularText
-                  text="Forgot Password?"
-                  textStyles={styles.forgotPasswordText}
-                />
+                <RegularText text="Forgot Password?" textStyles={styles.forgotPasswordText} />
               </TouchableOpacity>
               {loginError ? (
                 <View style={styles.errorContainer}>
@@ -107,42 +92,25 @@ const LoginScreen = () => {
               <View style={styles.socialLoginContainer}>
                 <View style={styles.dividerContainer}>
                   <View style={styles.divider} />
-                  <RegularText
-                    text="Or login with"
-                    textStyles={styles.dividerText}
-                  />
+                  <RegularText text="Or login with" textStyles={styles.dividerText} />
                   <View style={styles.divider} />
                 </View>
                 <View style={styles.socialButtonsRow}>
                   <TouchableOpacity style={styles.socialButton}>
-                    <Image
-                      source={GoogleIcon}
-                      style={styles.socialIcon}
-                      resizeMode="contain"
-                    />
+                    <Image source={GoogleIcon} style={styles.socialIcon} resizeMode="contain" />
                   </TouchableOpacity>
                   <View style={styles.socialButtonGap} />
                   <TouchableOpacity style={styles.socialButton}>
-                    <Image
-                      source={AppleIcon}
-                      style={styles.socialIcon}
-                      resizeMode="contain"
-                    />
+                    <Image source={AppleIcon} style={styles.socialIcon} resizeMode="contain" />
                   </TouchableOpacity>
                 </View>
               </View>
             </View>
           </View>
           <View style={styles.signupContainer}>
-            <RegularText
-              text="Don't have an account? "
-              textStyles={styles.RegisterText}
-            />
+            <RegularText text="Don't have an account? " textStyles={styles.signupText} />
             <TouchableOpacity onPress={handleRegister}>
-              <RegularText
-                text="Register Now"
-                textStyles={styles.RegisterButtonText}
-              />
+              <RegularText text="Register Now" textStyles={styles.signupLink} />
             </TouchableOpacity>
           </View>
         </ScrollView>
@@ -162,76 +130,56 @@ const styles = ScaledSheet.create({
     backgroundColor: COLOR.white,
     minHeight: "100%",
   },
-  container: {
-    flex: 1,
-    backgroundColor: COLOR.white,
-  },
-  inner: {
-    flex: 1,
+  mainContentContainer: {
+    paddingTop: "102@vs",
     paddingHorizontal: "16@s",
-    justifyContent: "center",
   },
   logoHeader: {
     alignItems: "flex-start",
-    marginBottom: "12@vs", // tighter gap
-    marginTop: "12@vs",    // tighter gap
+    marginBottom: "16@vs",
   },
   logoImage: {
-    width: "56@ms",
-    height: "56@ms",
-    resizeMode: "contain",
+    width: "56@s",
+    height: "56@s",
   },
   heading: {
-    marginBottom: "10@vs", // tighter gap
+    fontSize: "24@ms",
+    marginBottom: "16@vs",
     textAlign: "left",
   },
   formContainer: {
     width: "100%",
-    marginBottom: "10@vs", // tighter gap
   },
   inputContainer: {
-    marginBottom: "6@vs",
-    width: "100%",
+    marginBottom: "12@vs",
   },
   forgotPasswordContainer: {
     alignSelf: "flex-end",
-    marginBottom: "6@vs",
-    marginTop: "0@vs",
-    paddingRight: "4@s", // add space from edge
+    marginBottom: "12@vs",
   },
   forgotPasswordText: {
-    color: COLOR.darkGray,
     fontSize: "14@ms",
-    fontWeight: "400",
+    color: COLOR.darkGray,
   },
   errorContainer: {
-    flexDirection: "row",
-    alignItems: "center",
-    marginBottom: "6@vs",
-    paddingHorizontal: "4@s",
-    minHeight: "20@ms",
+    marginBottom: "12@vs",
   },
   errorText: {
-    color: COLOR.red || "#FF3B30",
     fontSize: "12@ms",
-    marginLeft: "6@s",
-    flex: 1,
+    color: COLOR.red,
   },
   btn: {
-    marginTop: "8@vs",
-    width: "100%",
-    height: "56@ms", 
+    marginTop: "16@vs",
+    height: "48@vs",
   },
   socialLoginContainer: {
-    width: "100%",
+    marginTop: "16@vs",
     alignItems: "center",
-    marginTop: "10@vs",
   },
   dividerContainer: {
     flexDirection: "row",
     alignItems: "center",
-    width: "100%",
-    marginVertical: "8@vs",
+    marginBottom: "16@vs",
   },
   divider: {
     flex: 1,
@@ -239,26 +187,22 @@ const styles = ScaledSheet.create({
     backgroundColor: COLOR.lightGray,
   },
   dividerText: {
-    width: "auto",
-    paddingHorizontal: "8@s",
-    color: COLOR.mediumGray,
+    marginHorizontal: "8@s",
     fontSize: "14@ms",
+    color: COLOR.mediumGray,
   },
   socialButtonsRow: {
     flexDirection: "row",
     justifyContent: "center",
-    alignItems: "center",
-    width: "100%",
-    marginTop: "8@vs",
   },
   socialButton: {
     flex: 1,
-    height: "50@ms",
-    borderRadius: "12@ms",
+    height: "44@vs",
+    borderRadius: "8@ms",
+    borderWidth: 1,
     borderColor: COLOR.lightGray,
     justifyContent: "center",
     alignItems: "center",
-    borderWidth: 1,
     backgroundColor: COLOR.white,
   },
   socialButtonGap: {
@@ -272,21 +216,17 @@ const styles = ScaledSheet.create({
     flexDirection: "row",
     justifyContent: "center",
     alignItems: "center",
-    paddingVertical: "12@vs", // add marginBottom for space from bottom
-    width: "100%",
-    marginBottom: "12@vs",
+    paddingVertical: "12@vs",
     backgroundColor: COLOR.white,
   },
-  RegisterText: {
-    width: "auto",
+  signupText: {
+    fontSize: "14@ms",
     color: COLOR.darkGray,
-    marginRight: 0,
   },
-  RegisterButtonText: {
+  signupLink: {
+    fontSize: "14@ms",
     color: COLOR.amber,
-    width: "auto",
     fontWeight: "600",
-    marginLeft: 0,
   },
 });
 
