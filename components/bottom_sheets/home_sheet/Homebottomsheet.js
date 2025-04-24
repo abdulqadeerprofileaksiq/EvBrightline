@@ -6,10 +6,10 @@ import IconsFlatlist from '../home_sheet/IconsFlatlist';
 import StationsData from '../../bottom_sheets/StationsData/StationsData';
 import BottomSheet, { BottomSheetView } from '@gorhom/bottom-sheet';
 
-
 const HomeBottomSheet = ({ onClose }) => {
   const bottomSheetRef = useRef(null);
 
+  // Only two snap points: 35% and 95%
   const snapPoints = useMemo(() => ['35%', '100%'], []);
 
   const handleSheetChanges = useCallback((index) => {
@@ -27,12 +27,10 @@ const HomeBottomSheet = ({ onClose }) => {
       backgroundStyle={styles.sheetBackground}
     >
       <BottomSheetView style={styles.contentContainer}>
-        {/* Icons section */}
         <View style={styles.iconsContainer}>
           <IconsFlatlist />
         </View>
-        
-        <ScrollView 
+        <ScrollView
           style={styles.content}
           contentContainerStyle={styles.contentScrollContainer}
           showsVerticalScrollIndicator={false}
@@ -40,7 +38,7 @@ const HomeBottomSheet = ({ onClose }) => {
         >
           <StationsData />
           <StationsData />
-          <StationsData />  
+          <StationsData />
           <StationsData />
           <StationsData />
         </ScrollView>
@@ -79,7 +77,7 @@ const styles = ScaledSheet.create({
     paddingHorizontal: '16@s',
   },
   contentScrollContainer: {
-    paddingBottom: '100@vs', 
+    paddingBottom: '100@vs',
   },
 });
 

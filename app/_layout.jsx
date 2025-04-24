@@ -7,6 +7,7 @@ import * as SplashScreen from "expo-splash-screen";
 import COLOR from "../constants/colors";
 import { ToastProvider } from '../context/toastContext/ToastContext';
 import { KeyboardAvoidingView, Platform } from "react-native";
+import { SafeAreaProvider, SafeAreaView } from 'react-native-safe-area-context';
 
 // Keep splash screen visible while loading fonts
 SplashScreen.preventAutoHideAsync();
@@ -38,16 +39,20 @@ export default function RootLayout() {
   }
 
   return (
-    <ToastProvider>
-      <GestureHandlerRootView style={{ flex: 1, backgroundColor: COLOR.white }} onLayout={onLayoutRootView}>
-        <KeyboardAvoidingView
-          style={{ flex: 1 }}
-          behavior={Platform.OS === "ios" ? "padding" : undefined}
-        >
-          <StatusBar backgroundColor={COLOR.white} barStyle="dark-content" />
-          <Stack screenOptions={{ headerShown: false }} />
-        </KeyboardAvoidingView>
-      </GestureHandlerRootView>
-    </ToastProvider>
+    <SafeAreaProvider>
+      <ToastProvider>
+        <GestureHandlerRootView style={{ flex: 1, backgroundColor: COLOR.white }} onLayout={onLayoutRootView}>
+          <SafeAreaView style={{ flex: 1 }} edges={['top', 'left', 'right']}>
+            <KeyboardAvoidingView
+              style={{ flex: 1 }}
+              behavior={Platform.OS === "ios" ? "padding" : undefined}
+            >
+              <StatusBar backgroundColor={COLOR.white} barStyle="dark-content" />
+              <Stack screenOptions={{ headerShown: false }} />
+            </KeyboardAvoidingView>
+          </SafeAreaView>
+        </GestureHandlerRootView>
+      </ToastProvider>
+    </SafeAreaProvider>
   );
 }

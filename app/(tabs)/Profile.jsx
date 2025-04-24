@@ -1,14 +1,47 @@
-import { StyleSheet, Text, View } from 'react-native'
-import React from 'react'
+import { StyleSheet, Text, View, TouchableOpacity } from 'react-native'
+import React, { useRef } from 'react'
+import ConnectionIssueSheet from '../../context/alertContext/alert';
 
 const Profile = () => {
+  const bottomSheetRef = useRef(null);
+
+  const handleShowSheet = () => {
+    bottomSheetRef.current?.snapToIndex(0);
+  };
+
+  const handleCloseSheet = () => {
+    console.log('Sheet closed');
+  };
+
   return (
-    <View>
-      <Text>profile</Text>
+    <View style={styles.container}>
+      <TouchableOpacity 
+        onPress={handleShowSheet}
+        style={styles.button}
+      >
+        <Text>Start Charging</Text>
+      </TouchableOpacity>
+
+      <ConnectionIssueSheet 
+        ref={bottomSheetRef}
+        onClose={handleCloseSheet}
+      />
     </View>
   )
 }
 
-export default Profile
+const styles = StyleSheet.create({
+  container: {
+    flex: 1,
+    backgroundColor: 'white',
+    alignItems: 'center',
+    justifyContent: 'center',
+  },
+  button: {
+    padding: 12,
+    backgroundColor: '#f0f0f0',
+    borderRadius: 8,
+  }
+})
 
-const styles = StyleSheet.create({})
+export default Profile

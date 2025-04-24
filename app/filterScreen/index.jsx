@@ -335,10 +335,10 @@ const styles = ScaledSheet.create({
     textAlign: 'left'
   },
   sliderContainer: {
-    height: '40@vs', // Reduced height
+    height: '40@vs', 
     position: 'relative',
-    marginBottom: 0, // Remove bottom margin
-    marginTop: 0 // Remove top margin
+    marginBottom: 0, 
+    marginTop: 0 
   },
   electricIcon: {
     width: '20@ms',
@@ -349,7 +349,7 @@ const styles = ScaledSheet.create({
     flexDirection: 'row',
     alignItems: 'center',
     justifyContent: 'center',
-    marginTop: '0@vs', // Remove top margin
+    marginTop: '0@vs', 
     marginBottom: '8@vs',
   },
   fastChargingText: {
@@ -390,8 +390,8 @@ const styles = ScaledSheet.create({
     justifyContent: 'center',
     backgroundColor: '#F5F5F5',
     borderWidth: 0,
-    margin: 0, // Remove all margins
-    borderRadius: 0, // Remove border radius for seamless connection
+    margin: 0, 
+    borderRadius: 0, 
   },
   plugTypeImage: {
     width: '28@ms',
