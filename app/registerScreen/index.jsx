@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import { View, TouchableOpacity, Image, StatusBar ,StyleSheet} from "react-native";
-import { ScaledSheet, scale, verticalScale, moderateScale } from "react-native-size-matters";
+import { ScaledSheet} from "react-native-size-matters";
 import { COLOR } from "../../constants/colors";
 import HeadingText from "../../components/global/HeadingText";
 import RegularText from "../../components/global/RegularText";
@@ -109,8 +109,7 @@ const styles = ScaledSheet.create({
     backgroundColor: COLOR.white,
     justifyContent: "space-between",
   },
-  mainContentContainer: {
-    paddingTop: "42@vs",
+  mainContentContainer: {   
     paddingHorizontal: "16@s",
   },
   backButton: {

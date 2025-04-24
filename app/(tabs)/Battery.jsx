@@ -1,11 +1,10 @@
+// screens/Battery.js
 import React, { useContext } from 'react';
-import { StyleSheet, Text, View, TouchableOpacity, StatusBar, Image, ScrollView } from 'react-native';
+import { StyleSheet, Text, View, TouchableOpacity, ScrollView } from 'react-native';
 import { Ionicons, MaterialIcons } from '@expo/vector-icons';
 import HeadingText from '../../components/global/HeadingText';
 import COLOR from '../../constants/colors';
-import { AlertSheetContext } from './_layout';
-
-// Import the charger image
+import { AlertSheetContext } from '../../app/_layout';
 import chargerImg from '../../assets/images/bottom_sheets/charger.png';
 
 function Battery() {
@@ -21,66 +20,65 @@ function Battery() {
   };
 
   return (
-    <View style={styles.container}>
-      <ScrollView 
-        showsVerticalScrollIndicator={false}
-        contentContainerStyle={styles.scrollContainer}
-      >
-        <View style={styles.content}>
-          <View style={styles.stationInfo}>
-            <HeadingText text="Veen Charging Station" textStyles={styles.stationName} />
-            <View style={styles.locationRow}>
-              <Ionicons name="location-outline" size={16} color="#666" />
-              <Text style={styles.locationText}>21212 Co Rd 742, Almont, United States</Text>
-            </View>
+    <ScrollView 
+      style={styles.container}
+      contentContainerStyle={styles.scrollContainer}
+      showsVerticalScrollIndicator={false}
+    >
+      <View style={styles.content}>
+        <View style={styles.stationInfo}>
+          <HeadingText text="Veen Charging Station" textStyles={styles.stationName} />
+          <View style={styles.locationRow}>
+            <Ionicons name="location-outline" size={16} color="#666" />
+            <Text style={styles.locationText}>21212 Co Rd 742, Almont, United States</Text>
           </View>
-          
-          <HeadingText text="100%" textStyles={styles.percentageText} />
-          
-          <View style={styles.carContainer}>
-            <View style={styles.carBackground}>
-              <View style={styles.car}>
-                <View style={styles.carBody}>
-                  <View style={styles.carWindow} />
-                </View>
+        </View>
+        
+        <HeadingText text="100%" textStyles={styles.percentageText} />
+        
+        <View style={styles.carContainer}>
+          <View style={styles.carBackground}>
+            <View style={styles.car}>
+              <View style={styles.carBody}>
+                <View style={styles.carWindow} />
               </View>
             </View>
           </View>
-          
-          <HeadingText text="0%" textStyles={styles.percentageText} />
-          
-          <HeadingText text="Connect Charger" textStyles={styles.connectText} />
-          <Text style={styles.remainingText}>Time remaining to full charge</Text>
-          
-          <Text style={styles.timerText}>00:00:00</Text>
-          
-          <View style={styles.infoBar}>
-            <View style={styles.infoItem}>
-              <HeadingText text="Charging Time" textStyles={styles.infoLabel} />
-              <HeadingText text="--" textStyles={styles.infoValue} />
-            </View>
-            <View style={styles.infoItem}>
-              <HeadingText text="Capacity Range" textStyles={styles.infoLabel} />
-              <HeadingText text="--" textStyles={styles.infoValue} />
-            </View>
-            <View style={styles.infoItem}>
-              <HeadingText text="Total Cost" textStyles={styles.infoLabel} />
-              <HeadingText text="--" textStyles={styles.infoValue} />
-            </View>
+        </View>
+        
+        <HeadingText text="0%" textStyles={styles.percentageText} />
+        
+        <HeadingText text="Connect Charger" textStyles={styles.connectText} />
+        <Text style={styles.remainingText}>Time remaining to full charge</Text>
+        
+        <Text style={styles.timerText}>00:00:00</Text>
+        
+        <View style={styles.infoBar}>
+          <View style={styles.infoItem}>
+            <HeadingText text="Charging Time" textStyles={styles.infoLabel} />
+            <HeadingText text="--" textStyles={styles.infoValue} />
           </View>
-          
-          <Text style={styles.portLabel}>Charging Port Number</Text>
-          <TouchableOpacity style={styles.portSelector}>
-            <Text style={styles.portNumber}>4</Text>
-            <MaterialIcons name="keyboard-arrow-down" size={24} color="#000" />
-          </TouchableOpacity>
-          
-          <TouchableOpacity style={styles.startButton} onPress={handleShowSheet}>
-            <Text style={styles.startButtonText}>Start Charging</Text>
-          </TouchableOpacity>
-        </View>      
-      </ScrollView>     
-    </View>
+          <View style={styles.infoItem}>
+            <HeadingText text="Capacity Range" textStyles={styles.infoLabel} />
+            <HeadingText text="--" textStyles={styles.infoValue} />
+          </View>
+          <View style={styles.infoItem}>
+            <HeadingText text="Total Cost" textStyles={styles.infoLabel} />
+            <HeadingText text="--" textStyles={styles.infoValue} />
+          </View>
+        </View>
+        
+        <Text style={styles.portLabel}>Charging Port Number</Text>
+        <TouchableOpacity style={styles.portSelector}>
+          <Text style={styles.portNumber}>4</Text>
+          <MaterialIcons name="keyboard-arrow-down" size={24} color="#000" />
+        </TouchableOpacity>
+        
+        <TouchableOpacity style={styles.startButton} onPress={handleShowSheet}>
+          <Text style={styles.startButtonText}>Start Charging</Text>
+        </TouchableOpacity>
+      </View>
+    </ScrollView>
   );
 }
 
@@ -88,15 +86,6 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     backgroundColor: '#fff',
-  },
-  header: {
-    paddingHorizontal: 15,
-    paddingVertical: 10,
-    backgroundColor: '#f0f0f0',
-  },
-  headerText: {
-    fontSize: 14,
-    color: '#999',
   },
   scrollContainer: {
     flexGrow: 1,
@@ -108,7 +97,7 @@ const styles = StyleSheet.create({
     paddingTop: 10,
   },
   stationInfo: {
-    marginTop: 25,
+    paddingTop: 15,
     alignItems: 'center',
   },
   stationName: {
@@ -234,35 +223,6 @@ const styles = StyleSheet.create({
     fontSize: 16,
     fontWeight: 'bold',
   },
-  tabBar: {
-    flexDirection: 'row',
-    justifyContent: 'space-around',
-    borderTopWidth: 1,
-    borderTopColor: '#eee',
-    backgroundColor: 'white',
-    paddingVertical: 10,
-  },
-  tabItem: {
-    padding: 10,
-  },
-  tabItemActive: {
-    padding: 10,
-    backgroundColor: '#f8e5ff',
-    borderRadius: 20,
-    width: 40,
-    height: 40,
-    alignItems: 'center',
-    justifyContent: 'center',
-  },
-  tabIndicator: {
-    height: 5,
-    width: 50,
-    backgroundColor: 'black',
-    borderRadius: 5,
-    alignSelf: 'center',
-    marginTop: 5,
-    marginBottom: 5,
-  }
 });
 
 export default Battery;

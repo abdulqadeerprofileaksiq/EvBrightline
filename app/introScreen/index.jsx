@@ -5,7 +5,6 @@ import {
   Text,
   useWindowDimensions,
   Animated,
-  SafeAreaView,
   FlatList,
   Image,
 } from "react-native";
@@ -126,7 +125,6 @@ const IntroScreen = () => {
   };
 
   return (
-    <SafeAreaView style={styles.container}>
       <View style={styles.screenContainer}>
         {/* Image slider - 60% of screen */}
         <View style={styles.imagesContainer}>
@@ -174,17 +172,16 @@ const IntroScreen = () => {
           </View>
         </View>
       </View>
-    </SafeAreaView>
   );
 };
 
 const styles = ScaledSheet.create({
   container: {
     flex: 1,
-    backgroundColor: COLOR.white, 
   },
   screenContainer: {
     flex: 1,
+    backgroundColor: COLOR.white,
   },
   imagesContainer: {
     height: "60%",
@@ -195,10 +192,6 @@ const styles = ScaledSheet.create({
     justifyContent: "center",
     alignItems: "center",
     height: "100%",
-  },
-  slideImage: {
-    // width set dynamically
-    // height set dynamically
   },
   contentContainer: {
     height: "40%",

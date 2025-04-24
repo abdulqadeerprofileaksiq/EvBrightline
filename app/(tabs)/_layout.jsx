@@ -1,14 +1,8 @@
-import React, { useEffect, useRef, useState, createContext } from 'react';
+import React, { useEffect, useRef } from 'react';
 import { View, TouchableOpacity, Animated } from 'react-native';
 import { Tabs } from "expo-router";
 import Ionicons from '@expo/vector-icons/Ionicons';
 import { ScaledSheet, s } from 'react-native-size-matters';
-import AlertBottomSheet from '../../context/alertContext/alert';
-import { MaterialIcons } from '@expo/vector-icons';
-import COLOR from '../../constants/colors';
-
-// Create context for alert
-export const AlertSheetContext = createContext();
 
 // Custom tab button with pill highlight animation
 const PillHighlightTabButton = ({ onPress, isFocused, iconName }) => {
@@ -64,7 +58,7 @@ const PillHighlightTabButton = ({ onPress, isFocused, iconName }) => {
   );
 };
 
-// Custom TabBar implementation using only navigation prop (no useRouter)
+// Custom TabBar implementation using only navigation prop
 function CustomTabBar({ state, navigation }) {
   const tabs = [
     { name: 'Home', icon: 'home-outline' },
@@ -97,47 +91,19 @@ function CustomTabBar({ state, navigation }) {
 
 // Main tab layout
 export default function TabLayout() {
-  const alertSheetRef = useRef(null);
-  const [alertConfig, setAlertConfig] = useState(null);
-
-  const showAlert = (config) => {
-    setAlertConfig(config);
-    setTimeout(() => {
-      alertSheetRef.current?.snapToIndex(0);
-    }, 100);
-  };
-
-  const handleCloseAlert = () => {
-    alertSheetRef.current?.close();
-    setAlertConfig(null);
-  };
-
   return (
-    <AlertSheetContext.Provider value={showAlert}>
-      <View style={{ flex: 1 }}>
-        <Tabs
-          screenOptions={{
-            headerShown: false,
-          }}
-          tabBar={props => <CustomTabBar {...props} />}
-        >
-          <Tabs.Screen name="Home" />
-          <Tabs.Screen name="Battery" />
-          <Tabs.Screen name="Profile" />
-        </Tabs>
-        <AlertBottomSheet
-          ref={alertSheetRef}
-          onClose={handleCloseAlert}
-          icon={alertConfig?.icon}
-          image={alertConfig?.image}
-          heading={alertConfig?.heading}
-          text={alertConfig?.text}
-          buttonText={alertConfig?.buttonText}
-          onButtonPress={handleCloseAlert}
-          snapPoints={['55%']}
-        />
-      </View>
-    </AlertSheetContext.Provider>
+    <View style={{ flex: 1 }}>
+      <Tabs
+        screenOptions={{
+          headerShown: false,
+        }}
+        tabBar={props => <CustomTabBar {...props} />}
+      >
+        <Tabs.Screen name="Home" />
+        <Tabs.Screen name="Battery" />
+        <Tabs.Screen name="Profile" />
+      </Tabs>
+    </View>
   );
 }
 

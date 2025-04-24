@@ -35,6 +35,8 @@ const AlertBottomSheet = React.forwardRef(
         disappearsOnIndex={-1}
         appearsOnIndex={0}
         opacity={0.5}
+        enableTouchThrough={false}
+        pressBehavior="close"
       />
     ), []);
 
@@ -47,6 +49,7 @@ const AlertBottomSheet = React.forwardRef(
         enablePanDownToClose
         backdropComponent={renderBackdrop}
         style={{ zIndex: 9999, elevation: 9999 }}
+        handleStyle={{ backgroundColor: COLOR.white }}
       >
         <BottomSheetView>
           {/* Main content container with all items */}

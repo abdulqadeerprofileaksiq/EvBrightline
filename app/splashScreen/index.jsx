@@ -1,11 +1,12 @@
 import React, { useEffect } from "react";
-import { View, StatusBar } from "react-native";
+import { View } from "react-native";
 import { useRouter } from "expo-router";
 import { ScaledSheet } from "react-native-size-matters";
 import Animated, { useSharedValue, useAnimatedStyle, withTiming } from "react-native-reanimated";
 
 //COLORS
 import { COLOR } from "../../constants/colors";
+import { StatusBar } from "expo-status-bar";
 
 export default function SplashScreen() {
   const router = useRouter();
@@ -25,7 +26,7 @@ export default function SplashScreen() {
 
   return (
     <>
-      <StatusBar backgroundColor={COLOR.darkGray} barStyle="light-content" />
+    <StatusBar style="dark" backgroundColor={COLOR.darkGray} />
       <View style={styles.container}>
         <Animated.Image
           source={require("../../assets/images/EV_Logo.png")}

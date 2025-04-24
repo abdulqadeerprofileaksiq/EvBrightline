@@ -1,5 +1,5 @@
 import React, { useState, useRef, useEffect } from "react";
-import { View, TouchableOpacity, TextInput, Image, StatusBar } from "react-native";
+import { View, TouchableOpacity, TextInput, Image} from "react-native";
 import { ScaledSheet } from "react-native-size-matters";
 import { COLOR } from "../../constants/colors";
 import HeadingText from "../../components/global/HeadingText";
@@ -43,22 +43,7 @@ const VerificationScreen = () => {
       setIsLoading(true);
       setTimeout(() => {
         setIsLoading(false);
-        switch (fromScreen) {
-          case 'forgotPasswordScreen':
-            router.navigate({
-              pathname: '/createNewPassword',
-              params: { source: 'forgotPassword' }
-            });
-            break;
-          case 'registerScreen':
-            router.navigate({
-              pathname: '/createPassword',
-              params: { source: 'register' }
-            });
-            break;
-          default:
-            console.warn('Unknown source screen:', fromScreen);
-        }
+        router.push('/createPassword');
       }, 1500);
     }
   };
@@ -96,7 +81,6 @@ const VerificationScreen = () => {
 
   return (
     <>
-      <StatusBar backgroundColor={COLOR.white} barStyle="dark-content" />
       <View style={styles.container}>
         <View style={styles.mainContentContainer}>
           <TouchableOpacity style={styles.backButton} onPress={handleBack}>
@@ -154,7 +138,6 @@ const styles = ScaledSheet.create({
     justifyContent: "space-between",
   },
   mainContentContainer: {
-    paddingTop: "42@vs",
     paddingHorizontal: "16@s",
   },
   backButton: {
