@@ -47,7 +47,7 @@ export default function RootLayout() {
               style={{ flex: 1 }}
               behavior={Platform.OS === "ios" ? "padding" : undefined}
             >
-              <StatusBar backgroundColor={COLOR.white} barStyle="dark-content" />
+              <StatusBar style="dark" />
               <Stack screenOptions={{ headerShown: false }} />
             </KeyboardAvoidingView>
           </SafeAreaView>
