@@ -5,17 +5,33 @@ import { Ionicons, MaterialIcons } from '@expo/vector-icons';
 import HeadingText from '../../components/global/HeadingText';
 import COLOR from '../../constants/colors';
 import { AlertSheetContext } from '../../app/_layout';
+
+// Import images
 import chargerImg from '../../assets/images/bottom_sheets/charger.png';
+import cardImg from '../../assets/images/bottom_sheets/payment.png'; // Add this new import
 
 function Battery() {
   const showAlert = useContext(AlertSheetContext);
 
+  // Handle secondary alert when "Try Again" is clicked
+  const handleSecondaryAlert = () => {
+    // Close the first alert implicitly by showing a new one
+    showAlert({
+      image: cardImg,
+      heading: "Link Payment Method",
+      text: "No card found. Add one to power your ride!",
+      buttonText: "Add"
+    });
+  };
+
+  // Primary alert with connection issue
   const handleShowSheet = () => {
     showAlert({
       image: chargerImg,
       heading: "Connection Issue Detected!",
       text: "It looks like your EV charger isn't securely connected. Check the plug, secure it, and give it another go!",
-      buttonText: "Try Again"
+      buttonText: "Try Again",
+      onButtonPress: handleSecondaryAlert
     });
   };
 

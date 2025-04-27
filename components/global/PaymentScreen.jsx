@@ -35,7 +35,7 @@ import PaypalIcon from "../../assets/images/payment/paypal.png";
 import CVVIcon from "../../assets/images/payment/cvv.png";
 // #endregion
 
-const PaymentScreen = () => {
+const PaymentScreen = ({ onBack }) => {
   const router = useRouter();
   // #region State Management
   const [fullName, setFullName] = useState("");
@@ -49,9 +49,7 @@ const PaymentScreen = () => {
   // #endregion
 
   // #region Data Options
-  // Use useMemo to avoid recreating the country list on each render
   const countryOptions = useMemo(() => {
-    // Filter out any undefined or invalid entries
     return countryList().getData().filter(country => 
       country && country.label && country.value
     ).map(country => ({
@@ -62,7 +60,6 @@ const PaymentScreen = () => {
   // #endregion
 
   // #region Search Handling
-  // Custom search filter function to pass to the dropdown
   const filterCountries = useCallback((item, query) => {
     if (query === undefined || query === '') return true;
     
@@ -74,9 +71,6 @@ const PaymentScreen = () => {
   // #endregion
 
   // #region Handlers
-  /**
-   * Submit payment details and continue
-   */
   const handleAddPayment = () => {
     setIsLoading(true);
     setTimeout(() => {
@@ -85,44 +79,30 @@ const PaymentScreen = () => {
     }, 1500);
   };
 
-  /**
-   * Skip payment and continue to Home
-   */
   const handleSkip = () => {
     router.push("/successScreen");
   };
   
-  /**
-   * Return to previous screen
-   */
-  const handleBack = () => router.back();
+  const handleBack = () => {
+    if (onBack) {
+      onBack();
+    } else {
+      router.back();
+    }
+  };
 
-  /**
-   * Select payment method option
-   */
   const handleSelectPaymentMethod = (method) => {
     setSelectedPaymentMethod(method);
   };
 
-  /**
-   * Format card number with spaces after every 4 digits
-   */
   const handleCardNumberChange = (text) => {
-    // Remove any non-numeric characters
     const cleaned = text.replace(/\D/g, '');
-    // Add spaces after every 4 digits
     const formatted = cleaned.replace(/(\d{4})(?=\d)/g, '$1 ');
-    // Limit to 19 characters (16 digits + 3 spaces)
     setCardNumber(formatted.slice(0, 19));
   };
 
-  /**
-   * Format expiry date with slash (MM/YY)
-   */
   const handleExpiryDateChange = (text) => {
-    // Remove any non-numeric characters
     const cleaned = text.replace(/\D/g, '');
-    // Format as MM/YY
     let formatted = cleaned;
     if (cleaned.length > 2) {
       formatted = cleaned.slice(0, 2) + '/' + cleaned.slice(2, 4);
@@ -142,7 +122,6 @@ const PaymentScreen = () => {
       >
         {/* Back Button */}
         <TouchableOpacity style={styles.backButton} onPress={handleBack}>
-          {/* Replace BackIcon width/height with Image component */}
           <Image source={BackIcon} style={styles.backIcon} />
         </TouchableOpacity>
 
@@ -160,7 +139,6 @@ const PaymentScreen = () => {
 
         {/* Form Section */}
         <View style={styles.formContainer}>
-          {/* Personal Details */}
           <InputComponent
             label="Full name*"
             placeholder="Enter your full name"
@@ -176,7 +154,7 @@ const PaymentScreen = () => {
             options={countryOptions}
             containerStyle={styles.formElement}
             placeholder="Select your country"
-            filterFunction={filterCountries} // Add custom filter function
+            filterFunction={filterCountries}
           />
 
           <InputComponent
@@ -268,7 +246,6 @@ const PaymentScreen = () => {
               </View>
             </View>
 
-            {/* Expiry date - full width */}
             <InputComponent
               label="Expiry date*"
               placeholder="MM/YY"
@@ -278,7 +255,6 @@ const PaymentScreen = () => {
               containerStyle={styles.formElement}
             />
             
-            {/* Security code - full width below expiry date */}
             <View style={styles.securityCodeContainer}>
               <InputComponent
                 label="Security code*"
@@ -305,11 +281,8 @@ const PaymentScreen = () => {
             isLoading={isLoading}
           />
           
-          {/* Center the Skip for now text */}
           <View style={styles.skipButtonWrapper}>
-            <TouchableOpacity 
-              onPress={handleSkip}
-            >
+            <TouchableOpacity onPress={handleSkip}>
               <RegularText
                 text="Skip for now"
                 textStyles={styles.skipButtonText}
@@ -358,7 +331,7 @@ const styles = StyleSheet.create({
   },
   formElement: {
     width: "100%",
-    marginVertical: moderateScale(6), // Equal margin for all form elements
+    marginVertical: moderateScale(6),
   },
   paymentMethodContainer: {
     marginVertical: moderateScale(6),
@@ -369,8 +342,8 @@ const styles = StyleSheet.create({
     marginBottom: moderateVerticalScale(5),
   },
   paymentOption: {
-    width: scale(75), // Increased width for card options
-    height: scale(60), // Decreased height
+    width: scale(75),
+    height: scale(60),
     borderRadius: moderateScale(12),
     borderWidth: 1,
     borderColor: COLOR.lightGray,
@@ -388,8 +361,8 @@ const styles = StyleSheet.create({
     textAlign: "left",
   },
   moreOption: {
-    width: scale(45), // Slightly wider for the dots
-    height: scale(60), // Match the decreased height
+    width: scale(45),
+    height: scale(60),
     borderRadius: moderateScale(12),
     borderWidth: 1,
     borderColor: COLOR.lightGray,
@@ -415,8 +388,8 @@ const styles = StyleSheet.create({
   cardIconsContainer: {
     position: "absolute",
     right: scale(16),
-    top: "50%", // Center vertically
-    transform: [{ translateY: -scale(12) }], // Adjust for icon height
+    top: "50%",
+    transform: [{ translateY: -scale(12) }],
     flexDirection: "row",
     alignItems: "center",
   },
@@ -436,8 +409,8 @@ const styles = StyleSheet.create({
   cvvIconContainer: {
     position: "absolute",
     right: scale(16),
-    top: "50%", // Center vertically
-    transform: [{ translateY: -scale(10) }], // Adjust for icon height
+    top: "50%",
+    transform: [{ translateY: -scale(10) }],
   },
   cvvIcon: {
     width: scale(22),
@@ -445,7 +418,7 @@ const styles = StyleSheet.create({
     resizeMode: 'contain',
   },
   buttonContainer: {
-    marginTop: moderateScale(20), // A bit more space before buttons
+    marginTop: moderateScale(20),
     width: "100%",
   },
   addButton: {
@@ -454,8 +427,8 @@ const styles = StyleSheet.create({
   },
   skipButtonWrapper: {
     width: "100%",
-    alignItems: "center", // Center horizontally
-    justifyContent: "center", // Center vertically
+    alignItems: "center",
+    justifyContent: "center",
     paddingVertical: moderateScale(12),
   },
   skipButtonText: {

@@ -40,6 +40,18 @@ const AlertBottomSheet = React.forwardRef(
       />
     ), []);
 
+    // Handle button press - if custom handler provided, use it, then close
+    const handleButtonPress = () => {
+      if (onButtonPress) {
+        // Execute the custom handler first
+        onButtonPress();
+        // Don't call onClose since the custom handler will show another alert
+      } else {
+        // Only close the sheet if there's no custom handler
+        onClose?.();
+      }
+    };
+
     return (
       <BottomSheet
         ref={ref}
@@ -78,7 +90,7 @@ const AlertBottomSheet = React.forwardRef(
             
             {/* Button */}
             {buttonText && (
-              <TouchableOpacity style={styles.button} onPress={onButtonPress}>
+              <TouchableOpacity style={styles.button} onPress={handleButtonPress}>
                 <HeadingText text={buttonText} textStyles={styles.buttonText} />
               </TouchableOpacity>
             )}

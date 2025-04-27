@@ -28,6 +28,7 @@ export default function RootLayout() {
     }, 100);
   };
 
+  // Updated alert handling to support custom button handlers
   const handleCloseAlert = () => {
     alertSheetRef.current?.close();
     setAlertConfig(null);
@@ -80,7 +81,7 @@ export default function RootLayout() {
                   heading={alertConfig?.heading}
                   text={alertConfig?.text}
                   buttonText={alertConfig?.buttonText}
-                  onButtonPress={handleCloseAlert}
+                  onButtonPress={alertConfig?.onButtonPress}
                   snapPoints={['55%']}
                 />
               </KeyboardAvoidingView>
