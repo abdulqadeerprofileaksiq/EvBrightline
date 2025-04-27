@@ -44,8 +44,7 @@ const CreatePasswordScreen = () => {
     // Simulate API call
     setTimeout(() => {
       setIsLoading(false);
-      // Navigate to the next screen on success
-      router.replace("/loginScreen");
+      router.replace("/addVehicleScreen"); 
     }, 1500);
   };
 
@@ -142,9 +141,6 @@ const styles = ScaledSheet.create({
   },
   formContainer: {
     width: "100%",
-  },
-  inputContainer: {
-    marginBottom: "16@vs",
   },
   requirementsContainer: {
     marginBottom: "16@vs",

@@ -65,24 +65,24 @@ const AddVehicleScreen = () => {
   const connectorOptions = [
     {
       value: "fivepin",
-      label: "Five Pin",
-      icon: () => <Image source={FivePinIcon} style={styles.icon} />,
+      label: "Type 1",
+      image: require("../../assets/images/EV_Chargers/fivepinBlack.png")
     },
     {
       value: "ninepin",
-      label: "Nine Pin",
-      icon: () => <Image source={NinePinIcon} style={styles.icon} />,
+      label: "Type 2", 
+      image: require("../../assets/images/EV_Chargers/ninepinBlack.png")
     },
     {
       value: "sevenpin",
-      label: "Seven Pin",
-      icon: () => <Image source={SevenPinIcon} style={styles.icon} />,
+      label: "CCS",
+      image: require("../../assets/images/EV_Chargers/sevenpinBlack.png")
     },
     {
       value: "fivepinalt",
-      label: "Five Pin Alt",
-      icon: () => <Image source={FivePinAltIcon} style={styles.icon} />,
-    },
+      label: "CHAdeMO",
+      image: require("../../assets/images/EV_Chargers/fivepinBlack.png")
+    }
   ];
   // #endregion
 
@@ -174,6 +174,7 @@ const AddVehicleScreen = () => {
               containerStyle={styles.inputContainer}
               placeholder="Select connector type"
               showIcon={true}
+              isConnectorType={true}
             />
 
             {/* License Plate Input */}
@@ -228,10 +229,8 @@ const styles = StyleSheet.create({
     flexGrow: 1,
     justifyContent: "space-between",
   },
-  // Header Section
   mainContentContainer: {
-    paddingTop: moderateVerticalScale(20),
-    paddingHorizontal: scale(24),
+    paddingHorizontal: scale(16),
   },
   backButton: {
     marginBottom: moderateVerticalScale(20),
@@ -248,6 +247,7 @@ const styles = StyleSheet.create({
     marginBottom: moderateVerticalScale(8),
   },
   subText: {
+    textAlign: "left",
     color: COLOR.darkGray,
     fontSize: moderateScale(14),
     marginBottom: moderateVerticalScale(-10),

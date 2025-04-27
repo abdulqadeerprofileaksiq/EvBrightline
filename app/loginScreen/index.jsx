@@ -29,10 +29,21 @@ const LoginScreen = () => {
   const handleLogin = () => {
     setLoginError("");
     setIsLoading(true);
-    setTimeout(() => {
-      showError("Unable to login: Incorrect username or password. Try again!");
-      setIsLoading(false);
-    }, 1500);
+    
+    // Check if credentials are admin/admin
+    if (username === "admin" && password === "admin") {
+      // Navigate to Home after short delay to show loading indicator
+      setTimeout(() => {
+        setIsLoading(false);
+        router.replace("/(tabs)/Home");
+      }, 1500);
+    } else {
+      // Show error for incorrect credentials
+      setTimeout(() => {
+        showError("Unable to login: Incorrect username or password. Try again!");
+        setIsLoading(false);
+      }, 1500);
+    }
   };
 
   const handleRegister = () => router.navigate("/registerScreen");
@@ -70,7 +81,7 @@ const LoginScreen = () => {
             {/* Forgot password link */}
             <TouchableOpacity
               style={styles.forgotPasswordContainer}
-              onPress={() => router.navigate("/forgetPasswordScreen")}
+              onPress={() => router.navigate("/forgotPasswordScreen")}
             >
               <RegularText text="Forgot Password?" textStyles={styles.forgotPasswordText} />
             </TouchableOpacity>
@@ -149,10 +160,7 @@ const styles = ScaledSheet.create({
   },
   formContainer: {
     width: "100%",
-  },
-  inputContainer: {
-    marginBottom: "12@vs",
-  },
+  },  
   forgotPasswordContainer: {
     alignSelf: "flex-end",
     marginBottom: "12@vs",
@@ -179,7 +187,7 @@ const styles = ScaledSheet.create({
   dividerContainer: {
     flexDirection: "row",
     alignItems: "center",
-    marginBottom: "16@vs",
+    marginBottom: "22@vs",
   },
   divider: {
     flex: 1,
@@ -197,7 +205,7 @@ const styles = ScaledSheet.create({
   },
   socialButton: {
     flex: 1,
-    height: "44@vs",
+    height: "50@vs",
     borderRadius: "8@ms",
     borderWidth: 1,
     borderColor: COLOR.lightGray,

@@ -1,6 +1,6 @@
 import React from 'react';
 import { View, TouchableOpacity, Image } from 'react-native';
-import HeadingText from '../global/HeadingText';
+import HeadingText from './HeadingText';
 import BackIcon from '../../assets/images/back.png';
 import BackDarkIcon from '../../assets/images/backdark.png';
 import { ScaledSheet } from 'react-native-size-matters';
@@ -30,8 +30,6 @@ const styles = ScaledSheet.create({
     alignItems: 'center',
     justifyContent: 'space-between',
     paddingHorizontal: '16@s',
-    paddingVertical: '12@vs',
-    marginTop: '32@vs',
   },
   backIcon: {
     width: '41@ms',

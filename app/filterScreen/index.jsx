@@ -324,9 +324,7 @@ const styles = ScaledSheet.create({
   },
   section: {
     paddingHorizontal: '16@s',
-    paddingBottom: '16@vs',
-    gap: '12@vs',
-    marginTop: '8@vs',
+    paddingVertical: '16@vs',
   },
   sectionTitle: {
     fontSize: '18@ms',
@@ -381,17 +379,19 @@ const styles = ScaledSheet.create({
   plugGridRow: {
     flexDirection: 'row',
     justifyContent: 'space-between',
-    gap: 0,
+    
+    
   },
   plugTypeButton: {
     flex: 1,
     aspectRatio: 1,
     alignItems: 'center',
     justifyContent: 'center',
-    backgroundColor: '#F5F5F5',
-    borderWidth: 0,
-    margin: 0, 
-    borderRadius: 0, 
+    backgroundColor: COLOR.white, // Changed from lightGray to white
+    borderWidth: 1, // Added border
+    borderColor: COLOR.lightGray, // Added light gray border
+    margin: 0,
+    borderRadius: 0,
   },
   plugTypeImage: {
     width: '28@ms',
@@ -409,7 +409,6 @@ const styles = ScaledSheet.create({
     backgroundColor: '#FFE7B3',
     borderWidth: 1,
     borderColor: '#FFB700',
-    zIndex: 1,
   },
   chargerOptions: {
     flexDirection: 'row',
@@ -420,8 +419,10 @@ const styles = ScaledSheet.create({
     paddingVertical: '12@vs',
     alignItems: 'center',
     justifyContent: 'center',
-    backgroundColor: '#F5F5F5',
-    borderWidth: 0,
+    backgroundColor: COLOR.white,
+    borderWidth: 1,
+    borderColor: COLOR.lightGray,
+
     margin: 0, 
     borderRadius: 0, 
   },
@@ -440,13 +441,14 @@ const styles = ScaledSheet.create({
   amenityButton: {
     flex: 1,
     aspectRatio: 1,
-    backgroundColor: '#F5F5F5',
+    backgroundColor: COLOR.white, // Changed from #F5F5F5 to white
     alignItems: 'center',
     justifyContent: 'center',
-    borderWidth: 0,
+    borderWidth: 1, // Changed from 0 to 1
+    borderColor: COLOR.lightGray, // Added light gray border
     paddingVertical: '16@vs',
-    margin: 0, // Remove all margins
-    borderRadius: 0, // Remove border radius
+    margin: 0,
+    borderRadius: 0,
   },
   amenityText: {
     fontSize: '12@ms',

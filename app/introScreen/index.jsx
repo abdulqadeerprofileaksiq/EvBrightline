@@ -200,7 +200,7 @@ const styles = ScaledSheet.create({
   upperContentContainer: {
     flex: 1,
     justifyContent: "flex-start",
-    paddingTop: "20@ms",
+    paddingTop: "60@ms",
   },
   progressContainer: {
     alignItems: "center",

@@ -4,7 +4,7 @@ import { ScaledSheet } from "react-native-size-matters";
 import { COLOR } from "../../../constants/colors";
 import Icon from "react-native-vector-icons/MaterialIcons";
 import Ionicons from "@expo/vector-icons/Ionicons";
-import OpenCloseIndicator from "../StationsData/openCloseindicator";
+import OpenCloseIndicator from "./openCloseindicator";
 
 const FivePin = require("../../../assets/images/EV_Chargers/fivepin.png");
 const SevenPin = require("../../../assets/images/EV_Chargers/sevenpin.png");
@@ -94,7 +94,11 @@ const StationsData = ({ stationData, onLocationPress }) => {
             onPress={handleLocationPress}
             activeOpacity={0.7}
           >
-            <Ionicons name="location-outline" size={24} color={COLOR.purple} />
+            <Image 
+              source={require("../../../assets/images/bottom_sheets/location.png")} 
+              style={styles.locationIcon} 
+              resizeMode="contain"
+            />
           </TouchableOpacity>
         </View>
         <View style={styles.divider} />
@@ -197,6 +201,10 @@ const styles = ScaledSheet.create({
     justifyContent: 'center',
     alignItems: 'center',
     zIndex: 10,
+  },
+  locationIcon: {
+    width: '30@ms',
+    height: '30@ms',
   },
   divider: {
     width: '100%',

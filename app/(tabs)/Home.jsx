@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { Text, View, SafeAreaView, Image, useWindowDimensions, StatusBar } from 'react-native';
-import { ScaledSheet, scale, verticalScale } from 'react-native-size-matters';
+import { ScaledSheet, scale, } from 'react-native-size-matters';
 import { COLOR } from '../../constants/colors';
 import Logo from "../../assets/images/EV_Logodark.png";
 import CarVector from "../../assets/images/homeimg/carmodel.png";
@@ -79,8 +79,6 @@ const styles = ScaledSheet.create({
     justifyContent: 'space-between',
     alignItems: 'center',
     paddingHorizontal: '16@s',
-    paddingVertical: '8@vs',
-    marginTop: '32@vs',
   },
   logoImage: {
     width: '40@ms',

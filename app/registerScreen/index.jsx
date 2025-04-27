@@ -142,7 +142,6 @@ const styles = ScaledSheet.create({
     width: "100%",
   },
   inputContainer: {
-    marginBottom: "12@vs",
   },
   btn: {
     marginTop: "16@vs",
@@ -155,7 +154,7 @@ const styles = ScaledSheet.create({
   dividerContainer: {
     flexDirection: "row",
     alignItems: "center",
-    marginBottom: "16@vs",
+    marginBottom: "22@vs",
   },
   divider: {
     flex: 1,
@@ -173,7 +172,7 @@ const styles = ScaledSheet.create({
   },
   socialButton: {
     flex: 1,
-    height: "44@vs",
+    height: "50@vs",
     borderRadius: "8@ms",
     borderWidth: 1,
     borderColor: COLOR.lightGray,

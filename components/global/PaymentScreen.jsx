@@ -21,10 +21,18 @@ import InputComponent from "../../components/global/Input";
 import LoginButton from "../../components/global/Button";
 import DropDown from "../../components/global/DropDown";
 import countryList from 'react-select-country-list';
-import { FontAwesome, FontAwesome5, MaterialIcons, Entypo } from '@expo/vector-icons';
+import { Entypo } from '@expo/vector-icons'; // Keep only Entypo for the dots
 
 // Import assets
 import BackIcon from "../../assets/images/back.png";
+// Import payment assets
+import CreditCardIcon from "../../assets/images/payment/creditcard.png";
+import AfterPayIcon from "../../assets/images/payment/Afterpay.png";
+import KlarnaIcon from "../../assets/images/payment/klarna.png";
+import VisaIcon from "../../assets/images/payment/visa.png";
+import MastercardIcon from "../../assets/images/payment/mastercard.png";
+import PaypalIcon from "../../assets/images/payment/paypal.png";
+import CVVIcon from "../../assets/images/payment/cvv.png";
 // #endregion
 
 const PaymentScreen = () => {
@@ -81,7 +89,7 @@ const PaymentScreen = () => {
    * Skip payment and continue to Home
    */
   const handleSkip = () => {
-    router.push("/(tabs)/Home");
+    router.push("/successScreen");
   };
   
   /**
@@ -190,7 +198,7 @@ const PaymentScreen = () => {
                 onPress={() => handleSelectPaymentMethod("card")}
               >
                 <View style={styles.paymentOptionContent}>
-                  <FontAwesome name="credit-card" size={24} color={COLOR.darkGray} />
+                  <Image source={CreditCardIcon} style={styles.paymentOptionIcon} />
                   <RegularText 
                     text="Card" 
                     textStyles={styles.paymentOptionText}
@@ -206,9 +214,9 @@ const PaymentScreen = () => {
                 onPress={() => handleSelectPaymentMethod("afterpay")}
               >
                 <View style={styles.paymentOptionContent}>
-                  <FontAwesome5 name="google-pay" size={24} color={COLOR.darkGray} />
+                  <Image source={AfterPayIcon} style={styles.paymentOptionIcon} />
                   <RegularText 
-                    text="GPay" 
+                    text="AfterPay" 
                     textStyles={styles.paymentOptionText}
                   />
                 </View>
@@ -222,9 +230,9 @@ const PaymentScreen = () => {
                 onPress={() => handleSelectPaymentMethod("klarna")}
               >
                 <View style={styles.paymentOptionContent}>
-                  <FontAwesome5 name="apple-pay" size={24} color={COLOR.darkGray} />
+                  <Image source={KlarnaIcon} style={styles.paymentOptionIcon} />
                   <RegularText 
-                    text="Apple" 
+                    text="Klarna" 
                     textStyles={styles.paymentOptionText}
                   />
                 </View>
@@ -254,9 +262,9 @@ const PaymentScreen = () => {
                 containerStyle={styles.formElement}
               />
               <View style={styles.cardIconsContainer}>
-                <FontAwesome name="cc-visa" size={24} color={COLOR.darkGray} style={styles.cardIcon} />
-                <FontAwesome name="cc-mastercard" size={24} color={COLOR.darkGray} style={styles.cardIcon} />
-                <FontAwesome name="cc-paypal" size={24} color={COLOR.darkGray} style={styles.cardIcon} />
+                <Image source={VisaIcon} style={styles.cardIcon} />
+                <Image source={MastercardIcon} style={styles.cardIcon} />
+                <Image source={PaypalIcon} style={styles.cardIcon} />
               </View>
             </View>
 
@@ -282,7 +290,7 @@ const PaymentScreen = () => {
                 containerStyle={styles.formElement}
               />
               <View style={styles.cvvIconContainer}>
-                <MaterialIcons name="security" size={20} color={COLOR.darkGray} />
+                <Image source={CVVIcon} style={styles.cvvIcon} />
               </View>
             </View>
           </View>
@@ -323,8 +331,7 @@ const styles = StyleSheet.create({
   },
   scrollContent: {
     flexGrow: 1,
-    paddingHorizontal: scale(24),
-    paddingTop: moderateVerticalScale(20),
+    paddingHorizontal: scale(16),
     paddingBottom: moderateVerticalScale(40),
   },
   backButton: {
@@ -342,6 +349,7 @@ const styles = StyleSheet.create({
     marginBottom: moderateVerticalScale(8),
   },
   subHeadingText: {
+    textAlign: "left",
     color: COLOR.darkGray,
     fontSize: moderateScale(14),
   },
@@ -413,6 +421,9 @@ const styles = StyleSheet.create({
     alignItems: "center",
   },
   cardIcon: {
+    width: scale(30),
+    height: scale(20),
+    resizeMode: 'contain',
     marginLeft: scale(8),
   },
   fullWidthInput: {
@@ -427,6 +438,11 @@ const styles = StyleSheet.create({
     right: scale(16),
     top: "50%", // Center vertically
     transform: [{ translateY: -scale(10) }], // Adjust for icon height
+  },
+  cvvIcon: {
+    width: scale(22),
+    height: scale(22),
+    resizeMode: 'contain',
   },
   buttonContainer: {
     marginTop: moderateScale(20), // A bit more space before buttons

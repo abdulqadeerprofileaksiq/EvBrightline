@@ -1,9 +1,9 @@
 import React, { useState, useEffect, useRef } from "react";
-import { View, TextInput, StyleSheet, TouchableOpacity, Animated } from "react-native";
+import { View, TextInput, StyleSheet, TouchableOpacity, Animated, Image } from "react-native";
 import { moderateScale, scale } from "react-native-size-matters";
-import { COLOR } from "../../constants/colors"; // Fixed import path
-import { FONT } from "../../constants/font"; // Added font import
-import Ionicons from "react-native-vector-icons/Ionicons";
+import { COLOR } from "../../constants/colors"; 
+import { FONT } from "../../constants/font"; 
+import MaterialIcons from "react-native-vector-icons/MaterialIcons";
 
 const InputComponent = ({
   label,
@@ -13,6 +13,8 @@ const InputComponent = ({
   keyboardType = "default",
   containerStyle,
   autoCapitalize = "none",
+  iconName, // New prop for left icon
+  iconColor = COLOR.mediumGray, // Default icon color
 }) => {
   // #region State and Refs
   const [isFocused, setIsFocused] = useState(false);
@@ -63,8 +65,24 @@ const InputComponent = ({
           isFocused ? styles.focusedContainer : null
         ]}
       >
-        <View style={styles.inputWrapper}>
-          <Animated.Text style={[styles.label, labelStyle]}>
+        {iconName && (
+          <View style={styles.leftIconContainer}>
+            <MaterialIcons 
+              name={iconName} 
+              size={moderateScale(22)} 
+              color={iconColor} 
+            />
+          </View>
+        )}
+        <View style={[
+          styles.inputWrapper,
+          iconName ? styles.inputWithLeftIcon : null
+        ]}>
+          <Animated.Text style={[
+            styles.label, 
+            labelStyle,
+            iconName ? styles.labelWithLeftIcon : null
+          ]}>
             {label}
           </Animated.Text>
           
@@ -84,11 +102,19 @@ const InputComponent = ({
         
         {secureTextEntry && (
           <TouchableOpacity onPress={togglePasswordVisibility} style={styles.eyeIcon}>
-            <Ionicons 
-              name={isPasswordVisible ? "eye" : "eye-off"} 
-              size={moderateScale(22)} 
-              color={COLOR.mediumGray} 
-            />
+            {isPasswordVisible ? (
+              <Image 
+                source={require('../../assets/images/input/eye.png')}
+                style={styles.eyeImage} 
+                resizeMode="contain"
+              />
+            ) : (
+              <MaterialIcons 
+                name="visibility-off" 
+                size={moderateScale(22)} 
+                color={COLOR.mediumGray} 
+              />
+            )}
           </TouchableOpacity>
         )}
       </View>
@@ -100,6 +126,7 @@ const InputComponent = ({
 // #region Styles
 const styles = StyleSheet.create({
   container: {
+    marginTop: moderateScale(10),
     flexDirection: "row",
     alignItems: "center",
     height: moderateScale(56),
@@ -108,7 +135,6 @@ const styles = StyleSheet.create({
     borderColor: COLOR.lightGray,
     paddingHorizontal: moderateScale(16),
     backgroundColor: COLOR.white,
-    marginVertical: moderateScale(10),
     width: "100%",
     position: "relative",
   },
@@ -132,8 +158,8 @@ const styles = StyleSheet.create({
   },
   input: {
     flex: 1,
-    fontFamily: FONT.regular, // Updated to use FONT constant instead of TYPO
-    fontSize: moderateScale(14), // Added explicit font size
+    fontFamily: FONT.regular, 
+    fontSize: moderateScale(14), 
     color: COLOR.darkGray,
     paddingVertical: 0,
     height: "100%",
@@ -142,7 +168,25 @@ const styles = StyleSheet.create({
     padding: moderateScale(5),
     justifyContent: 'center',
     alignItems: 'center',
-  }
+    width: moderateScale(32),
+    height: moderateScale(32),
+  },
+  eyeImage: {
+    width: moderateScale(22),
+    height: moderateScale(22),
+    tintColor: COLOR.mediumGray,
+  },
+  leftIconContainer: {
+    marginRight: moderateScale(10),
+    justifyContent: 'center',
+    alignItems: 'center',
+  },
+  inputWithLeftIcon: {
+    paddingLeft: moderateScale(5),
+  },
+  labelWithLeftIcon: {
+    left: moderateScale(5),
+  },
 });
 // #endregion
 

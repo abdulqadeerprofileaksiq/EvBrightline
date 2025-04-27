@@ -5,7 +5,8 @@ import {
   Text, 
   View, 
   Platform,
-  TextInput
+  TextInput,
+  Image
 } from 'react-native';
 import { Dropdown } from 'react-native-element-dropdown';
 import FontAwesome6 from '@expo/vector-icons/FontAwesome6';
@@ -23,7 +24,8 @@ const DropDownComponent = ({
   containerStyle,
   placeholder = "Select an option",
   showIcon = true,
-  filterFunction, // Add custom filter function prop
+  filterFunction,
+  isConnectorType = false,
 }) => {
   // #region State
   const [isFocus, setIsFocus] = useState(false);
@@ -32,13 +34,10 @@ const DropDownComponent = ({
   // #endregion
 
   // #region Effects
-  // Update filtered data when search query changes or options change
   useEffect(() => {
     if (filterFunction) {
-      // Use the custom filter function if provided
       setFilteredData(options.filter(item => filterFunction(item, searchQuery)));
     } else {
-      // Default filtering behavior
       if (searchQuery) {
         const lowercaseQuery = searchQuery.toLowerCase().trim();
         setFilteredData(
@@ -53,14 +52,9 @@ const DropDownComponent = ({
   }, [searchQuery, options, filterFunction]);
   // #endregion
 
-  // #region Auto-select first option on mount
   useEffect(() => {
-    // Only auto-select if no value is provided and there are options available
     if ((!value || value === '') && options.length > 0) {
-      // Get the first option's value
       const firstOptionValue = options[0].value;
-      
-      // Call the onSelect callback with the first option's value
       if (onSelect) {
         onSelect(firstOptionValue);
       }
@@ -68,7 +62,6 @@ const DropDownComponent = ({
   }, [options]);
   // #endregion
 
-  // Check if a value is selected
   const hasValue = value && options.some(option => option.value === value);
 
   // #region Render Item
@@ -78,7 +71,14 @@ const DropDownComponent = ({
         styles.item, 
         value === item.value && styles.selectedItem
       ]}>
-        {showIcon && item.icon && (
+        {isConnectorType && item.image && (
+          <Image 
+            source={item.image} 
+            style={styles.itemImage}
+            resizeMode="contain"
+          />
+        )}
+        {!isConnectorType && showIcon && item.icon && (
           <View style={styles.iconContainer}>
             {item.icon()}
           </View>
@@ -89,29 +89,26 @@ const DropDownComponent = ({
   };
   // #endregion
 
-  // #region Selected Item
-  const renderSelectedItem = (item) => {
-    // Determine if an actual item is selected (vs. showing placeholder)
-    const isItemSelected = item && options.some(option => option.value === item.value);
+  // Render left icon for connector type
+  const renderLeftIcon = (visible) => {
+    if (!isConnectorType) {
+      return null;
+    }
+    
+    // Find the selected item to show its icon
+    const selectedItem = options.find(option => option.value === value);
+    if (!selectedItem || !selectedItem.image) {
+      return null;
+    }
     
     return (
-      <View style={styles.selectedTextContainer}>
-        {showIcon && item?.icon && (
-          <View style={styles.iconContainer}>
-            {item.icon()}
-          </View>
-        )}
-        <Text style={[
-          styles.selectedText,
-          // Apply semi-bold style only when an actual item is selected
-          isItemSelected && styles.boldSelectedText
-        ]}>
-          {item?.label || placeholder}
-        </Text>
-      </View>
+      <Image
+        source={selectedItem.image}
+        style={styles.leftIconImage}
+        resizeMode="contain"
+      />
     );
   };
-  // #endregion
 
   // #region Search Input
   const renderInputSearch = () => {
@@ -138,7 +135,6 @@ const DropDownComponent = ({
     <View style={[styles.container, containerStyle]}>
       <Text style={[
         styles.label,
-        // Apply dark gray color to label when an item is selected
         hasValue && styles.selectedLabel
       ]}>
         {label}
@@ -147,13 +143,13 @@ const DropDownComponent = ({
       <Dropdown
         style={[
           styles.dropdown,
-          // Apply dark gray border when an item is selected
+          isConnectorType && styles.connectorDropdown,
           hasValue && styles.selectedDropdown
         ]}
         containerStyle={styles.dropdownContainer}
         placeholderStyle={styles.placeholderStyle}
         selectedTextStyle={styles.selectedTextStyle}
-        data={filteredData} // Use filtered data instead of all options
+        data={filteredData}
         search={true}
         searchQuery={searchQuery}
         onChangeSearchQuery={setSearchQuery}
@@ -170,6 +166,7 @@ const DropDownComponent = ({
           setIsFocus(false);
           setSearchQuery('');
         }}
+        renderLeftIcon={isConnectorType ? renderLeftIcon : undefined}
         renderRightIcon={() => (
           <FontAwesome6 
             name={isFocus ? "angle-up" : "angle-down"} 
@@ -178,9 +175,8 @@ const DropDownComponent = ({
           />
         )}
         renderItem={renderItem}
-        renderSelectedItem={renderSelectedItem}
         activeColor='transparent'
-        keyboardAvoiding={true}
+        showsVerticalScrollIndicator={false}
       />
     </View>
   );
@@ -192,7 +188,7 @@ const styles = StyleSheet.create({
   container: {
     width: '100%',
     marginVertical: moderateScale(5),
-    zIndex: 5000, // Higher zIndex to ensure dropdown appears above other elements
+    zIndex: 5000,
   },
   dropdown: {
     height: moderateScale(56),
@@ -202,10 +198,13 @@ const styles = StyleSheet.create({
     paddingHorizontal: moderateScale(16),
     backgroundColor: COLOR.white,
   },
-  // New style for selected dropdown
   selectedDropdown: {
     borderColor: COLOR.darkGray,
     borderWidth: 1,
+  },
+  connectorDropdown: {
+    paddingLeft: moderateScale(12),
+    paddingVertical: moderateScale(3),
   },
   label: {
     position: "absolute",
@@ -218,7 +217,6 @@ const styles = StyleSheet.create({
     color: COLOR.mediumGray,
     zIndex: 10,
   },
-  // New style for selected label
   selectedLabel: {
     color: COLOR.darkGray,
   },
@@ -227,7 +225,7 @@ const styles = StyleSheet.create({
     color: COLOR.mediumGray,
   },
   selectedTextStyle: {
-    fontFamily: FONT.regular,
+    fontFamily: FONT.medium,
     fontSize: moderateScale(16),
     color: COLOR.darkGray,
   },
@@ -237,7 +235,7 @@ const styles = StyleSheet.create({
     alignItems: 'center',
   },
   item: {
-    padding: moderateScale(16),
+    padding: moderateScale(17),
     flexDirection: 'row',
     alignItems: 'center',
   },
@@ -260,23 +258,19 @@ const styles = StyleSheet.create({
     ...(Platform.OS === 'android' && {
       elevation: 5,
     }),
-    zIndex: 5000, // Higher zIndex for dropdown container
+    zIndex: 5000,
   },
   selectedTextContainer: {
     flexDirection: 'row',
     alignItems: 'center',
-  },
-  selectedText: {
-    fontFamily: FONT.regular,
-    fontSize: moderateScale(16),
-    color: COLOR.mediumGray, // Default color for placeholder
+    paddingVertical: moderateScale(3),
+    width: '100%',
   },
   boldSelectedText: {
     fontFamily: FONT.medium,
     fontSize: moderateScale(16),
-    color: COLOR.darkGray, // Black text for selected item
+    color: COLOR.darkGray,
   },
-  // Search styling
   searchContainer: {
     flexDirection: 'row',
     alignItems: 'center',
@@ -295,6 +289,45 @@ const styles = StyleSheet.create({
     color: COLOR.darkGray,
     height: moderateScale(40),
     padding: 0,
+  },
+  connectorIconWrapper: {
+    width: moderateScale(40),
+    height: moderateScale(40),
+    justifyContent: 'center',
+    alignItems: 'center',
+    marginRight: moderateScale(12),
+  },
+  connectorSelectedWrapper: {
+    width: moderateScale(36),
+    height: moderateScale(36),
+    justifyContent: 'center',
+    alignItems: 'center',
+    marginRight: moderateScale(10),
+  },
+  connectorListImage: {
+    width: moderateScale(40),
+    height: moderateScale(40),
+    marginRight: moderateScale(16),
+  },
+  connectorSelectedImage: {
+    width: moderateScale(36),
+    height: moderateScale(36),
+    marginRight: moderateScale(12),
+  },
+  itemImage: {
+    width: moderateScale(30),
+    height: moderateScale(30),
+    marginRight: moderateScale(10),
+  },
+  selectedItemImage: {
+    width: moderateScale(32),
+    height: moderateScale(32),
+    marginRight: moderateScale(12),
+  },
+  leftIconImage: {
+    width: moderateScale(28),
+    height: moderateScale(28),
+    marginRight: moderateScale(10),
   },
 });
 // #endregion
