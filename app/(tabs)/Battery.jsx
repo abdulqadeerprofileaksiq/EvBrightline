@@ -1,21 +1,31 @@
 // screens/Battery.js
-import React, { useContext } from 'react';
-import { StyleSheet, Text, View, TouchableOpacity, ScrollView } from 'react-native';
+import React, { useContext, useState } from 'react';
+import { StyleSheet, Text, View, TouchableOpacity, ScrollView, Image } from 'react-native';
 import { Ionicons, MaterialIcons } from '@expo/vector-icons';
 import HeadingText from '../../components/global/HeadingText';
 import COLOR from '../../constants/colors';
 import { AlertSheetContext } from '../../app/_layout';
+import SlideButoon from '../../components/global/SlideButoon';
+import DropDownComponent from '../../components/global/DropDown';
 
 // Import images
 import chargerImg from '../../assets/images/bottom_sheets/charger.png';
-import cardImg from '../../assets/images/bottom_sheets/payment.png'; // Add this new import
+import cardImg from '../../assets/images/bottom_sheets/payment.png';
+import purpleCarImg from '../../assets/images/purpleCar.png';
 
 function Battery() {
   const showAlert = useContext(AlertSheetContext);
+  const [selectedPort, setSelectedPort] = useState('4');
+  
+  // Port options
+  const portOptions = [
+    { label: '1', value: '1' },
+    { label: '2', value: '2' },
+    { label: '3', value: '3' },
+    { label: '4', value: '4' },
+  ];
 
-  // Handle secondary alert when "Try Again" is clicked
   const handleSecondaryAlert = () => {
-    // Close the first alert implicitly by showing a new one
     showAlert({
       image: cardImg,
       heading: "Link Payment Method",
@@ -54,11 +64,11 @@ function Battery() {
         
         <View style={styles.carContainer}>
           <View style={styles.carBackground}>
-            <View style={styles.car}>
-              <View style={styles.carBody}>
-                <View style={styles.carWindow} />
-              </View>
-            </View>
+            <Image
+              source={purpleCarImg}
+              style={styles.carImage}
+              resizeMode="contain"
+            />
           </View>
         </View>
         
@@ -82,17 +92,26 @@ function Battery() {
             <HeadingText text="Total Cost" textStyles={styles.infoLabel} />
             <HeadingText text="--" textStyles={styles.infoValue} />
           </View>
-        </View>
-        
-        <Text style={styles.portLabel}>Charging Port Number</Text>
-        <TouchableOpacity style={styles.portSelector}>
-          <Text style={styles.portNumber}>4</Text>
-          <MaterialIcons name="keyboard-arrow-down" size={24} color="#000" />
-        </TouchableOpacity>
+        </View>        
+        <DropDownComponent 
+          label="Select Port"
+          value={selectedPort}
+          onSelect={setSelectedPort}
+          options={portOptions}
+          containerStyle={styles.dropdownContainer}
+        />
         
         <TouchableOpacity style={styles.startButton} onPress={handleShowSheet}>
           <Text style={styles.startButtonText}>Start Charging</Text>
         </TouchableOpacity>
+        
+        {/* Add slide button below */}
+        <View style={styles.slideButtonContainer}>
+          <SlideButoon 
+            title="Slide to finish now"
+            onComplete={handleShowSheet}
+          />
+        </View>
       </View>
     </ScrollView>
   );
@@ -144,33 +163,16 @@ const styles = StyleSheet.create({
     height: 180,
   },
   carBackground: {
-    width: 150,
-    height: 150,
-    borderRadius: 75,
+    width: 120,
+    height: 120,
+    borderRadius: 110,
     backgroundColor: '#FFF7E6',
     justifyContent: 'center',
     alignItems: 'center',
   },
-  car: {
-    width: 100,
-    height: 60,
-    justifyContent: 'center',
-    alignItems: 'center',
-  },
-  carBody: {
-    width: 100,
-    height: 60,
-    backgroundColor: '#853699',
-    borderRadius: 12,
-    position: 'relative',
-    justifyContent: 'center',
-    alignItems: 'center',
-  },
-  carWindow: {
-    width: 60,
-    height: 20,
-    backgroundColor: '#FFF',
-    borderRadius: 5,
+  carImage: {
+    width: 297,
+    height: 180,
   },
   connectText: {
     fontSize: 24,
@@ -213,19 +215,8 @@ const styles = StyleSheet.create({
     color: '#333',
     marginBottom: 8,
   },
-  portSelector: {
-    flexDirection: 'row',
-    justifyContent: 'space-between',
-    alignItems: 'center',
-    borderWidth: 1,
-    borderColor: '#ddd',
-    borderRadius: 10,
-    padding: 15,
-    backgroundColor: 'white',
+  dropdownContainer: {
     marginBottom: 15,
-  },
-  portNumber: {
-    fontSize: 16,
   },
   startButton: {
     backgroundColor: '#853699',
@@ -239,6 +230,7 @@ const styles = StyleSheet.create({
     fontSize: 16,
     fontWeight: 'bold',
   },
+  
 });
 
 export default Battery;

@@ -3,6 +3,7 @@ import {
   View,
   StyleSheet,
   Image,
+  Text,
 } from 'react-native';
 import {
   moderateScale,
@@ -10,20 +11,33 @@ import {
   scale,
 } from "react-native-size-matters";
 import { COLOR } from "../../constants/colors";
+import { FONT } from "../../constants/font"; // Make sure this import exists
 import HeadingText from "../../components/global/HeadingText";
 import RegularText from "../../components/global/RegularText";
-import LoginButton from "../../components/global/Button";
-import { useRouter } from "expo-router";
+import Button from "../../components/global/Button";
+import { useRouter, useLocalSearchParams } from "expo-router";
 
 // Import assets
 import SuccessIcon from "../../assets/images/Successmark.png"; 
 
 const SuccessScreen = () => {
   const router = useRouter();
+  const params = useLocalSearchParams();
+  // Get the amount from params or default to $13
+  const amount = params.amount || "$13";
 
   // Navigation handler
-  const handleLogin = () => {
-    router.replace("/loginScreen");
+  const handleGoHome = () => {
+    router.replace("/(tabs)/Home");
+  };
+
+  // Create the message with styled amount
+  const renderMessage = () => {
+    return (
+      <Text style={styles.messageText}>
+        Your <Text style={styles.highlightedAmount}>{amount}</Text> payment has been processed—fast, secure, and done! Time to hit the road!
+      </Text>
+    );
   };
 
   return (
@@ -41,20 +55,17 @@ const SuccessScreen = () => {
         {/* Success Message */}
         <View style={styles.messageContainer}>
           <HeadingText
-            text="Thanks! You're all Set."
+            text="Payment Confirmed!"
             textStyles={styles.titleText}
           />
-          <RegularText
-            text="Your account has been created successfully."
-            textStyles={styles.messageText}
-          />
+          {renderMessage()}
         </View>
         
-        {/* Login Button */}
-        <LoginButton
+        {/* Back to Home Button */}
+        <Button
           style={styles.btn}
-          title="Back to Login"
-          onPress={handleLogin}
+          title="Back to Home"
+          onPress={handleGoHome}
         />
       </View>
     </View>
@@ -87,16 +98,23 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     marginBottom: moderateVerticalScale(20),
   },
-  titleText: {
-    marginBottom: moderateVerticalScale(16),
-    textAlign: 'center',
-    fontSize: moderateScale(24),
-  },
   messageText: {
     color: COLOR.darkGray,
     fontSize: moderateScale(16),
     textAlign: 'center',
     paddingHorizontal: scale(20),
+    lineHeight: moderateScale(22),
+    fontFamily: FONT.regular,
+  },
+  highlightedAmount: {
+    color: COLOR.amber,
+    fontWeight: 'bold',
+    fontFamily: FONT.semiBold,
+  },
+  titleText: {
+    marginBottom: moderateVerticalScale(16),
+    textAlign: 'center',
+    fontSize: moderateScale(24),
   },
   btn: {
     width: "100%",

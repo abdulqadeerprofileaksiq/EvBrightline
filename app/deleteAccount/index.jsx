@@ -1,0 +1,121 @@
+import React from 'react';
+import { View } from 'react-native';
+import { ScaledSheet } from 'react-native-size-matters';
+import { COLOR } from '../../constants/colors';
+import { FONT } from '../../constants/font';
+import Header from '../../components/global/Header';
+import Button from '../../components/global/Button';
+import HeadingText from '../../components/global/HeadingText';
+import RegularText from '../../components/global/RegularText';
+import { useRouter } from 'expo-router';
+
+const DeleteAccount = () => {
+  const router = useRouter();
+
+  // Handler for delete confirmation
+  const handleDeleteConfirm = () => {
+    // Implementation for account deletion
+    console.log('Account deletion confirmed');
+    // After successful deletion, you might want to navigate to login screen
+    // router.replace('/login');
+  };
+
+  // Handler for going back
+  const handleGoBack = () => {
+    router.back();
+  };
+
+  return (
+    <View style={styles.container}>
+      <Header text="Delete account" />
+      
+      <View style={styles.contentContainer}>
+        <HeadingText 
+          text="Are you sure you want to say goodbye?"
+          textStyles={styles.headingText}
+        />
+        
+        <RegularText 
+          text="Deleting your account is a permanent action. This means all your profile details, preferences, saved content, and activity history will be erased forever—no turning back."
+          textStyles={styles.descriptionText}
+        />
+        
+        <RegularText 
+          text="We're sad to see you go, but we respect your decision. Before proceeding, take a moment to ensure this is what you truly want."
+          textStyles={styles.warningText}
+        />
+      </View>
+      
+      <View style={styles.buttonsContainer}>
+        <Button 
+          title="Delete"
+          onPress={handleDeleteConfirm}
+          style={styles.deleteButton}  // Changed from buttonStyle to style
+        />
+        
+        <Button 
+          title="Go Back"
+          onPress={handleGoBack}
+          style={styles.goBackButton}
+          textStyle={styles.goBackButtonText}
+        />
+      </View>
+    </View>
+  );
+};
+
+const styles = ScaledSheet.create({
+  container: {
+    flex: 1,
+    backgroundColor: 'white',
+  },
+  contentContainer: {
+    paddingTop: '20@vs',
+    alignItems: 'flex-start',  
+    alignContent: 'flex-start',
+    paddingHorizontal: '16@s', 
+  },
+  headingText: {
+    fontSize: '18@ms',
+    marginBottom: '12@vs',
+    color: '#000',
+    textAlign: 'left',  // Added to ensure text aligns from left
+    alignSelf: 'flex-start',  // Added to ensure text container starts from left
+  },
+  descriptionText: {
+    fontSize: '14@ms',
+    lineHeight: '20@vs',
+    color: COLOR.darkGray,
+    marginBottom: '16@vs',
+    textAlign: 'left',  // Added to ensure text aligns from left
+  },
+  warningText: {
+    fontSize: '14@ms',
+    lineHeight: '20@vs',
+    color: '#4A4A4A',
+    textAlign: 'left',  // Added to ensure text aligns from left
+  },
+  buttonsContainer: {
+    // Remove absolute positioning
+    paddingHorizontal: '16@s',
+    marginTop: '30@vs', // Add margin to create appropriate spacing
+    marginBottom: '20@vs',
+  },
+  deleteButton: {
+    backgroundColor: COLOR.red, 
+    borderRadius: '12@ms',
+    height: '56@vs',
+  },
+  goBackButton: {
+    borderWidth: 1,
+    borderColor: COLOR.darkGray,
+    borderRadius: '12@ms',
+    backgroundColor: 'white',
+    height: '56@vs',
+  },
+  goBackButtonText: {
+    color: COLOR.darkGray,
+  },
+});
+
+export default DeleteAccount;

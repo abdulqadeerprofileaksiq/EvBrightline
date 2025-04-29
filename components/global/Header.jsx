@@ -30,6 +30,7 @@ const styles = ScaledSheet.create({
     alignItems: 'center',
     justifyContent: 'space-between',
     paddingHorizontal: '16@s',
+    backgroundColor: 'white',
   },
   backIcon: {
     width: '41@ms',

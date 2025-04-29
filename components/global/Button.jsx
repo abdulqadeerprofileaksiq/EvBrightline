@@ -17,6 +17,7 @@ const Button = ({
   isLoading = false,
   disabled = false,
   style,
+  textStyle, 
 }) => {
   // #region Render
   return (
@@ -29,7 +30,7 @@ const Button = ({
       {isLoading ? (
         <ActivityIndicator size="small" color={COLOR.white} />
       ) : (
-        <Text style={styles.buttonText}>{title}</Text>
+        <Text style={[styles.buttonText, textStyle]}>{title}</Text>
       )}
     </TouchableOpacity>
   );
@@ -40,12 +41,12 @@ const Button = ({
 const styles = StyleSheet.create({
   button: {
     backgroundColor: COLOR.purple,
-    borderRadius: moderateScale(12),
+    borderRadius: moderateScale(8),
     height: moderateScale(56),
     alignItems: "center",
     justifyContent: "center",
     width: "100%",
-    marginVertical: moderateScale(10),
+    marginVertical: moderateScale(8),
   },
   buttonText: {
     fontFamily: FONT.semiBold,

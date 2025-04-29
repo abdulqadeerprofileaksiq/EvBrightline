@@ -14,7 +14,9 @@ const AlertBottomSheet = React.forwardRef(
       heading,
       text,
       buttonText,
+      secondaryButtonText,
       onButtonPress,
+      onSecondaryButtonPress,
       snapPoints = ['35%'], 
     },
     ref
@@ -50,6 +52,14 @@ const AlertBottomSheet = React.forwardRef(
         // Only close the sheet if there's no custom handler
         onClose?.();
       }
+    };
+
+    // Handle secondary button press
+    const handleSecondaryButtonPress = () => {
+      if (onSecondaryButtonPress) {
+        onSecondaryButtonPress();
+      }
+      onClose?.();
     };
 
     return (
@@ -88,8 +98,27 @@ const AlertBottomSheet = React.forwardRef(
               </View>
             )}
             
-            {/* Button */}
-            {buttonText && (
+            {/* Buttons */}
+            {secondaryButtonText ? (
+              <View style={styles.buttonRow}>
+                {/* Secondary Button (No) on left */}
+                <TouchableOpacity 
+                  style={styles.secondaryButton} 
+                  onPress={handleSecondaryButtonPress}
+                >
+                  <HeadingText text={secondaryButtonText} textStyles={styles.secondaryButtonText} />
+                </TouchableOpacity>
+                
+                {/* Primary Button (Yes) on right */}
+                <TouchableOpacity 
+                  style={styles.primaryButton} 
+                  onPress={handleButtonPress}
+                >
+                  <HeadingText text={buttonText} textStyles={styles.primaryButtonText} />
+                </TouchableOpacity>
+              </View>
+            ) : (
+              /* Single Button */
               <TouchableOpacity style={styles.button} onPress={handleButtonPress}>
                 <HeadingText text={buttonText} textStyles={styles.buttonText} />
               </TouchableOpacity>
@@ -135,6 +164,41 @@ const styles = StyleSheet.create({
     fontSize: 16,
     color: COLOR.mediumGray,
     textAlign: 'center',
+  },
+  buttonRow: {
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    width: '100%',
+    marginTop: 20,
+    paddingHorizontal: 10,
+  },
+  secondaryButton: {
+    flex: 1,
+    backgroundColor: '#fff',
+    borderRadius: 8,
+    paddingVertical: 8,
+    marginRight: 10,
+    alignItems: 'center',
+    justifyContent: 'center',
+    borderWidth: 1,
+    borderColor: COLOR.lightGray,
+  },
+  secondaryButtonText: {
+    color: COLOR.darkGray,
+    fontSize: 16,
+  },
+  primaryButton: {
+    flex: 1,
+    backgroundColor: COLOR.purple,
+    borderRadius: 8,
+    paddingVertical: 8,
+    marginLeft: 10,
+    alignItems: 'center',
+    justifyContent: 'center',
+  },
+  primaryButtonText: {
+    color: '#fff',
+    fontSize: 16,
   },
   button: {
     marginTop: 10,
