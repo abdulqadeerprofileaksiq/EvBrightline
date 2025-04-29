@@ -1,23 +1,35 @@
-import React from 'react';
+import React, { useContext } from 'react';
 import { View } from 'react-native';
 import { ScaledSheet } from 'react-native-size-matters';
 import { COLOR } from '../../constants/colors';
-import { FONT } from '../../constants/font';
 import Header from '../../components/global/Header';
 import Button from '../../components/global/Button';
 import HeadingText from '../../components/global/HeadingText';
 import RegularText from '../../components/global/RegularText';
 import { useRouter } from 'expo-router';
+import { DoubleButtonAlertContext } from '../_layout';
 
 const DeleteAccount = () => {
   const router = useRouter();
+  const showDoubleButtonAlert = useContext(DoubleButtonAlertContext);
 
   // Handler for delete confirmation
   const handleDeleteConfirm = () => {
-    // Implementation for account deletion
-    console.log('Account deletion confirmed');
-    // After successful deletion, you might want to navigate to login screen
-    // router.replace('/login');
+    console.log("Delete button pressed");
+    if (showDoubleButtonAlert) {
+      showDoubleButtonAlert({
+        heading: "Confirm Account Deletion",
+        text: "This action cannot be undone. Are you absolutely sure you want to delete your account permanently?",
+        confirmText: "Delete",
+        cancelText: "Cancel",
+        onConfirm: () => {
+          // Implementation for account deletion
+          console.log('Account deletion confirmed');
+          // After successful deletion, navigate to login screen
+          router.replace('/');
+        }
+      });
+    }
   };
 
   // Handler for going back

@@ -64,7 +64,13 @@ const Profile = () => {
         {item.highlight && <View style={styles.highlightDot} />}
         <TouchableOpacity
           style={styles.menuItem}
-          onPress={() => console.log(`Navigating to ${item.route}`)}
+          onPress={() => {
+            if (item.route === 'Vehicles') {
+              router.push('/myVehicles');
+            } else {
+              console.log(`Navigating to ${item.route}`);
+            }
+          }}
         >
           <View style={styles.menuIconLabel}>
             <View style={styles.iconContainer}>
