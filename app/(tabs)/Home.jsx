@@ -1,20 +1,27 @@
 import React, { useState } from 'react';
-import { Text, View, SafeAreaView, Image, useWindowDimensions, StatusBar } from 'react-native';
+import { Text, View, SafeAreaView, Image, useWindowDimensions, StatusBar, TouchableOpacity } from 'react-native';
 import { ScaledSheet, scale, } from 'react-native-size-matters';
 import { COLOR } from '../../constants/colors';
 import Logo from "../../assets/images/EV_Logodark.png";
+import FontAwesome5 from '@expo/vector-icons/FontAwesome5';
 import CarVector from "../../assets/images/homeimg/carmodel.png";
 import CarCharging from "../../assets/images/homeimg/vectorCar.png";
 import HomeBottomSheet from '../../components/bottom_sheets/home_sheet/Homebottomsheet';
 import RegularText from '../../components/global/RegularText';
+import { useRouter } from 'expo-router'; // Add router import
 
 const Home = () => {
   const [bottomSheetVisible, setBottomSheetVisible] = useState(true);
   const { width, height } = useWindowDimensions();
+  const router = useRouter(); // Add router import
 
   const isLandscape = width > height;
   const boxWidth = isLandscape ? width * 0.5 - scale(16) : width - scale(32);
   const boxHeight = isLandscape ? height * 0.5 : Math.min(width * 0.9, height * 0.4);
+
+  const handleNotificationPress = () => {
+    router.push('/notificationScreen');
+  };
 
   return (
     <>
@@ -24,7 +31,9 @@ const Home = () => {
           <View style={styles.header}>
             <Image source={Logo} style={styles.logoImage} />
             <Text style={styles.title}>EV - BRIGHTLINE</Text>
-            {/* Notification icon placeholder */}
+            <TouchableOpacity onPress={handleNotificationPress}>
+              <FontAwesome5 name="bell" size={24} color={COLOR.amber} />
+            </TouchableOpacity>
           </View>
           <View style={styles.divider} />
 

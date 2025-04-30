@@ -7,6 +7,7 @@ import { useRouter } from "expo-router";
 import StationsData from "../../components/bottom_sheets/StationsData/StationsData";
 import HeadingText from "../../components/global/HeadingText";
 import RegularText from "../../components/global/RegularText";
+import NoResult from "../../components/global/NoResult";
 
 // Import assets
 import BackIcon from "../../assets/images/back.png";
@@ -91,24 +92,6 @@ const SearchScreen = () => {
     setSearchText("");
   };
 
-  const renderNoResults = () => (
-    <View style={styles.noResultsContainer}>
-      <Image 
-        source={NoResultIcon} 
-        style={styles.noResultImage}
-        resizeMode="contain"
-      />
-      <HeadingText
-        text="Oops! No Matching Results"
-        textStyles={styles.noResultTitle}
-      />
-      <RegularText
-        text="We couldn't find the station you were looking for. Please check for spelling errors or try again."
-        textStyles={styles.noResultText}
-      />
-    </View>
-  );
-
   return (
     <View style={styles.container}>
       <View style={styles.headerRow}>
@@ -143,8 +126,14 @@ const SearchScreen = () => {
         />
       )}
       
-      {/* Show no results message when user has searched but there are no matches */}
-      {hasSearched && filteredStations.length === 0 && renderNoResults()}
+      {/* Using the NoResult component when user has searched but there are no matches */}
+      {hasSearched && filteredStations.length === 0 && (
+        <NoResult 
+          image={NoResultIcon}
+          title="Oops! No Matching Results"
+          message="We couldn't find the station you were looking for. Please check for spelling errors or try again."
+        />
+      )}
       
       {/* Show nothing when user hasn't searched yet */}
       {!hasSearched && <View style={styles.emptySpace} />}
@@ -199,28 +188,6 @@ const styles = ScaledSheet.create({
   crossIcon: {
     marginLeft: '8@s',
   }, 
-  noResultsContainer: {
-    flex: 1,
-    justifyContent: 'center',
-    alignItems: 'center',
-    paddingHorizontal: '24@s',
-  },
-  noResultImage: {
-    width: '120@s',
-    height: '120@s',
-    marginBottom: '24@vs',
-  },
-  noResultTitle: {
-    fontSize: '24@s',
-    textAlign: 'center',
-    marginBottom: '16@vs',
-  },
-  noResultText: {
-    fontSize: '16@s',
-    textAlign: 'center',
-    color: COLOR.darkGray,
-    lineHeight: '24@s',
-  },
   emptySpace: {
     flex: 1,
   }

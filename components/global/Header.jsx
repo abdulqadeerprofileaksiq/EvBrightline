@@ -1,12 +1,19 @@
 import React from 'react';
-import { View, TouchableOpacity, Image } from 'react-native';
+import { View, TouchableOpacity, Image, Text } from 'react-native';
 import HeadingText from './HeadingText';
 import BackIcon from '../../assets/images/back.png';
 import BackDarkIcon from '../../assets/images/backdark.png';
 import { ScaledSheet } from 'react-native-size-matters';
 import { useRouter } from 'expo-router';
+import { FONT } from '../../constants/font';
+import { COLOR } from '../../constants/colors';
 
-const Header = ({ text = "", dark = false }) => {
+const Header = ({ 
+  text = "", 
+  dark = false,
+  showAddNew = false,
+  onAddNew = () => {} 
+}) => {
   const router = useRouter();
   return (
     <View style={styles.headerContainer}>
@@ -19,7 +26,16 @@ const Header = ({ text = "", dark = false }) => {
       <View style={styles.headingWrapper}>
         <HeadingText text={text} textStyles={{ fontSize: 16, textAlign: 'left' }} />
       </View>
-      <View style={styles.emptySpace} />
+      {showAddNew ? (
+        <TouchableOpacity 
+          style={styles.addButton}
+          onPress={onAddNew}
+        >
+          <Text style={styles.addButtonText}>+Add New</Text>
+        </TouchableOpacity>
+      ) : (
+        <View style={styles.emptySpace} />
+      )}
     </View>
   );
 };
@@ -45,6 +61,15 @@ const styles = ScaledSheet.create({
   },
   emptySpace: {
     width: '24@s',
+  },
+  addButton: {
+    paddingVertical: '8@vs',
+    paddingHorizontal: '4@s',
+  },
+  addButtonText: {
+    fontFamily: FONT.semiBold,
+    fontSize: '16@ms',
+    color: COLOR.amber,
   },
 });
 
