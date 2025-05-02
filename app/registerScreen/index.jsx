@@ -204,7 +204,6 @@ const styles = ScaledSheet.create({
   footerLink: {
     fontSize: "14@ms",
     color: COLOR.amber,
-    fontWeight: "600",
   },
 });
 

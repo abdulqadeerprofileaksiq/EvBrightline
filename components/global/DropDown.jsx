@@ -187,7 +187,7 @@ const DropDownComponent = ({
 const styles = StyleSheet.create({
   container: {
     width: '100%',
-    marginVertical: moderateScale(5),
+    marginVertical: moderateScale(8),
     zIndex: 5000,
   },
   dropdown: {

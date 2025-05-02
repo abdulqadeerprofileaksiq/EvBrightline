@@ -51,7 +51,7 @@ const IntroScreen = () => {
   }, [currentIndex]);
 
   const handleDone = async () => {
-    router.replace("/loginScreen");
+    router.replace("/registerScreen"); 
   };
 
   const handleNextSlide = () => {
