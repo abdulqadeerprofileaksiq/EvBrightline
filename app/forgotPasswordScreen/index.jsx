@@ -42,9 +42,14 @@ const ForgotPasswordScreen = () => {
     setIsLoading(true);
     // Simulating API call
     setTimeout(() => {
-      setIsLoading(false);      // Navigate to OTP verification screen
-      router.push("/verificationScreen");})}
-  ;
+      setIsLoading(false);
+      // Navigate to OTP verification screen with source screen parameter
+      router.push({
+        pathname: "/verificationScreen",
+        params: { fromScreen: 'forgotPasswordScreen' }
+      });
+    }, 1500);
+  };
   // #endregion
 
   // #region Render
@@ -99,9 +104,7 @@ const styles = StyleSheet.create({
     flex: 1,
     backgroundColor: COLOR.white,
   },  
-  // Header section
   mainContentContainer: {
-    paddingTop: moderateVerticalScale(20),
     paddingHorizontal: scale(16),
   },
   backButton: {

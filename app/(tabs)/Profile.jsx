@@ -3,7 +3,6 @@ import { View, Text, Image, StyleSheet, TouchableOpacity, SafeAreaView, ScrollVi
 import { ScaledSheet } from 'react-native-size-matters';
 import { Ionicons, FontAwesome5, MaterialIcons, MaterialCommunityIcons, Feather } from '@expo/vector-icons';
 import COLOR from '../../constants/colors';
-import {FONT} from '../../constants/font';
 import HeadingText from '../../components/global/HeadingText';
 import RegularText from '../../components/global/RegularText';
 import { router } from 'expo-router';
@@ -65,10 +64,33 @@ const Profile = () => {
         <TouchableOpacity
           style={styles.menuItem}
           onPress={() => {
-            if (item.route === 'Vehicles') {
-              router.push('/myVehicles');
-            } else {
-              console.log(`Navigating to ${item.route}`);
+            // Navigate based on route name
+            switch(item.route) {
+              case 'Vehicles':
+                router.push('/myVehicles');
+                break;
+              case 'Payment':
+                router.push('/paymentOptions');
+                break;
+              case 'History':
+                router.push('/transactionHistory');
+                break;
+              case 'Preferences':
+                router.push('/preferences');
+                break;
+              case 'UpdatePassword':
+                router.push('/updatePassword');
+                break;
+              case 'Privacy':
+                router.push('/privacyPolicy');
+                break;
+              case 'Logout':
+                // Handle logout functionality
+                console.log('Logging out...');
+                // Add actual logout logic here
+                break;
+              default:
+                console.log(`Navigating to ${item.route}`);
             }
           }}
         >
@@ -102,7 +124,15 @@ const Profile = () => {
             <RegularText text="johnauthor@gmail.com" textStyles={styles.profileEmail} />
             </View>
           </View>
-          <TouchableOpacity style={styles.editButton} onPress={() => router.push('/editProfile')}>
+          <TouchableOpacity 
+            style={styles.editButton} 
+            onPress={() => {
+              // Using a different navigation approach
+              router.navigate('/editProfile');
+              // Alternatively, you could use this approach:
+              // router.replace('/editProfile');
+            }}
+          >
             <Feather name="edit-2" size={18} color="#F9AD5A" />
           </TouchableOpacity>
         </TouchableOpacity>

@@ -24,7 +24,10 @@ const RegisterScreen = () => {
     setIsLoading(true);
     setTimeout(() => {
       setIsLoading(false);
-      router.navigate( '/verificationScreen');
+      router.navigate({
+        pathname: '/verificationScreen',
+        params: { fromScreen: 'registerScreen' }
+      });
     }, 1500);
   };
 
