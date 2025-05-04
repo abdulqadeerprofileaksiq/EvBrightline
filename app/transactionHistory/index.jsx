@@ -1,6 +1,10 @@
 import React from 'react';
-import { View, Text, StyleSheet, TouchableOpacity, SafeAreaView, FlatList, StatusBar, Image } from 'react-native';
+import { View, Text, TouchableOpacity, SafeAreaView, FlatList, StatusBar, Image } from 'react-native';
 import { Ionicons } from '@expo/vector-icons';
+import { useRouter } from 'expo-router';
+import Header from '../../components/global/Header';
+import { ScaledSheet } from 'react-native-size-matters';
+import NoResult from '../../components/global/NoResult';
 
 const TRANSACTIONS = [
   {
@@ -59,8 +63,11 @@ const TRANSACTIONS = [
   },
 ];
 
-const TransactionItem = ({ item }) => (
-  <TouchableOpacity style={styles.transactionItem}>
+const TransactionItem = ({ item, onPress }) => (
+  <TouchableOpacity 
+    style={styles.transactionItem}
+    onPress={() => onPress(item)}
+  >
     <View style={styles.transactionLeft}>
       <Image source={item.icon} style={styles.cardIcon} />
       <View style={styles.cardDetails}>
@@ -76,99 +83,113 @@ const TransactionItem = ({ item }) => (
   </TouchableOpacity>
 );
 
-const TransactionHistory = ({ navigation }) => {
+const TransactionHistory = () => {
+  const router = useRouter();
+  
+  // Check if there are transactions
+  const hasTransactions = TRANSACTIONS && TRANSACTIONS.length > 0;
+  
+  const handleTransactionPress = (transaction) => {
+    // Navigate based on card type
+    switch(transaction.cardType) {
+      case 'Master card':
+        router.push('/chargingSummary');
+        break;
+      case 'Visa':
+        router.push('/chargingSummary');
+        break;
+      case 'PayPal':
+        router.push('/chargingSummary');
+        break;
+      default:
+        router.push('/chargingSummary');
+    }
+  };
+  
   return (
     <SafeAreaView style={styles.container}>
       <StatusBar barStyle="dark-content" />
       
-      <View style={styles.header}>
-        <TouchableOpacity 
-          style={styles.backButton} 
-          onPress={() => navigation.goBack()}
-        >
-          <Ionicons name="chevron-back" size={24} color="#000" />
-        </TouchableOpacity>
-        <Text style={styles.headerTitle}>Transaction History</Text>
-      </View>
+      <Header text="Transaction History" />
       
-      <FlatList
-        data={TRANSACTIONS}
-        renderItem={({ item }) => <TransactionItem item={item} />}
-        keyExtractor={item => item.id}
-        showsVerticalScrollIndicator={false}
-        contentContainerStyle={styles.listContent}
-        ItemSeparatorComponent={() => <View style={styles.separator} />}
-      />
+      {hasTransactions ? (
+        <FlatList
+          data={TRANSACTIONS}
+          renderItem={({ item }) => (
+            <TransactionItem 
+              item={item} 
+              onPress={handleTransactionPress}
+            />
+          )}
+          keyExtractor={item => item.id}
+          showsVerticalScrollIndicator={false}
+          contentContainerStyle={styles.listContent}
+          ItemSeparatorComponent={() => <View style={styles.separator} />}
+        />
+      ) : (
+        <NoResult
+          image={require('../../assets/images/transactionnodata.png')}
+          title="No Transactions Yet!"
+          message="Your payment history will appear here after your first transaction."
+        />
+      )}
     </SafeAreaView>
   );
 };
 
-const styles = StyleSheet.create({
+const styles = ScaledSheet.create({
   container: {
     flex: 1,
     backgroundColor: '#FFFFFF',
   },
-  header: {
-    flexDirection: 'row',
-    alignItems: 'center',
-    paddingHorizontal: 16,
-    height: 56,
-  },
-  backButton: {
-    padding: 8,
-  },
-  headerTitle: {
-    fontSize: 18,
-    fontWeight: '600',
-    marginLeft: 16,
-  },
   listContent: {
-    paddingHorizontal: 16,
+    paddingHorizontal: '16@s',
   },
   transactionItem: {
     flexDirection: 'row',
     justifyContent: 'space-between',
     alignItems: 'center',
-    paddingVertical: 16,
+    paddingVertical: '16@vs',
   },
   transactionLeft: {
     flexDirection: 'row',
-    alignItems: 'center',
+    alignItems: 'flex-start', // Change from 'center' to 'flex-start' to align at the top
   },
   cardIcon: {
-    width: 28,
-    height: 20,
+    width: '28@s',
+    height: '20@vs',
     resizeMode: 'contain',
+    marginTop: '4@vs', // Add top margin to align with the first line of text
   },
   cardDetails: {
-    marginLeft: 12,
+    marginLeft: '12@s',
   },
   cardTitle: {
-    fontSize: 16,
+    fontSize: '16@s',
     fontWeight: '500',
   },
   dateText: {
-    fontSize: 12,
+    fontSize: '12@s',
     color: '#888888',
-    marginTop: 2,
+    marginTop: '2@vs',
   },
   transactionRight: {
     flexDirection: 'row',
     alignItems: 'center',
   },
   amountText: {
-    fontSize: 16,
+    fontSize: '16@s',
     fontWeight: '500',
     color: '#F0A500',
-    marginRight: 8,
+    marginRight: '8@s',
   },
   viaText: {
-    fontSize: 14,
+    fontSize: '14@s',
     fontWeight: '400',
     color: '#888888',
   },
   separator: {
-    height: 1,
+    height: '1@vs',
     backgroundColor: '#F0F0F0',
   },
 });

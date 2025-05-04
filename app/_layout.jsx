@@ -1,4 +1,4 @@
-import { Stack } from "expo-router";
+import { Stack, usePathname } from "expo-router";
 import { GestureHandlerRootView } from "react-native-gesture-handler";
 import { StatusBar } from "expo-status-bar";
 import { useFonts } from "expo-font";
@@ -6,38 +6,36 @@ import { useCallback, useRef, useState, createContext } from "react";
 import * as SplashScreen from "expo-splash-screen";
 import COLOR from "../constants/colors";
 import { ToastProvider } from '../context/toastContext/ToastContext';
-import { KeyboardAvoidingView, Platform, View } from "react-native";
+import { KeyboardAvoidingView, Platform, View, StyleSheet } from "react-native";
 import { SafeAreaProvider, SafeAreaView } from 'react-native-safe-area-context';
 import AlertBottomSheet from '../context/alertContext/alert';
-import DoubleButtonAlert from '../context/alertContext/doublebutton';
 
-// Create contexts for alerts at the app root level
+// Create alert context
 export const AlertSheetContext = createContext();
-export const DoubleButtonAlertContext = createContext();
+
+// Screens that should ignore SafeAreaView
+const FULL_SCREEN_ROUTES = [
+  '/[stationDetails]', // Add any other routes that need to ignore SafeAreaView
+];
 
 // Keep splash screen visible while loading fonts
 SplashScreen.preventAutoHideAsync();
 
 export default function RootLayout() {
   const alertSheetRef = useRef(null);
-  const doubleButtonAlertRef = useRef(null);
   const [alertConfig, setAlertConfig] = useState(null);
-  const [doubleButtonConfig, setDoubleButtonConfig] = useState(null);
+  const pathname = usePathname();
+  
+  // Check if current route is in the full screen list
+  const isFullScreenRoute = FULL_SCREEN_ROUTES.some(route => 
+    pathname.startsWith(route.replace('[', '').replace(']', ''))
+  );
 
-  // Alert handling functions
+  // Unified alert function
   const showAlert = (config) => {
     setAlertConfig(config);
     setTimeout(() => {
       alertSheetRef.current?.snapToIndex(0);
-    }, 100);
-  };
-
-  // Double button alert handling functions
-  const showDoubleButtonAlert = (config) => {
-    console.log("Showing double button alert with config:", config);
-    setDoubleButtonConfig(config);
-    setTimeout(() => {
-      doubleButtonAlertRef.current?.snapToIndex(0);
     }, 100);
   };
 
@@ -46,12 +44,7 @@ export default function RootLayout() {
     setAlertConfig(null);
   };
 
-  const handleCloseDoubleButtonAlert = () => {
-    doubleButtonAlertRef.current?.close();
-    setDoubleButtonConfig(null);
-  };
-
-  // Clear loading with named font families
+  // Load fonts
   const [fontsLoaded] = useFonts({
     "Urbanist-Black": require("../assets/fonts/Urbanist-Black.ttf"),
     "Urbanist-Bold": require("../assets/fonts/Urbanist-Bold.ttf"),
@@ -64,64 +57,72 @@ export default function RootLayout() {
     "Urbanist-Thin": require("../assets/fonts/Urbanist-Thin.ttf"),
   });
 
-  // Hide splash screen once fonts are loaded
   const onLayoutRootView = useCallback(async () => {
-    if (fontsLoaded) {
-      await SplashScreen.hideAsync();
-    }
+    if (fontsLoaded) await SplashScreen.hideAsync();
   }, [fontsLoaded]);
 
-  // Return null until fonts are loaded
-  if (!fontsLoaded) {
-    return null;
-  }
+  if (!fontsLoaded) return null;
 
   return (
     <AlertSheetContext.Provider value={showAlert}>
-      <DoubleButtonAlertContext.Provider value={showDoubleButtonAlert}>
-        <SafeAreaProvider>
-          <ToastProvider>
-            <GestureHandlerRootView style={{ flex: 1, backgroundColor: COLOR.white }} onLayout={onLayoutRootView}>
-              <SafeAreaView style={{ flex: 1 }} edges={['top', 'left', 'right']}>
+      <SafeAreaProvider>
+        <ToastProvider>
+          <GestureHandlerRootView style={styles.container} onLayout={onLayoutRootView}>
+            <StatusBar style={isFullScreenRoute ? "light" : "dark"} />
+            
+            {isFullScreenRoute ? (
+              // For full screen routes like stationDetails, render Stack directly without SafeAreaView
+              <KeyboardAvoidingView
+                style={styles.keyboardView}
+                behavior={Platform.OS === "ios" ? "padding" : undefined}
+              >
+                <Stack screenOptions={{ headerShown: false }} />
+              </KeyboardAvoidingView>
+            ) : (
+              // For normal routes, use the SafeAreaView
+              <SafeAreaView style={styles.safeArea}>
                 <KeyboardAvoidingView
-                  style={{ flex: 1 }}
+                  style={styles.keyboardView}
                   behavior={Platform.OS === "ios" ? "padding" : undefined}
                 >
-                  <StatusBar style="dark" />
                   <Stack screenOptions={{ headerShown: false }} />
-                  
-                  {/* Global Alert Bottom Sheet */}
-                  <AlertBottomSheet
-                    ref={alertSheetRef}
-                    onClose={handleCloseAlert}
-                    icon={alertConfig?.icon}
-                    image={alertConfig?.image}
-                    heading={alertConfig?.heading}
-                    text={alertConfig?.text}
-                    buttonText={alertConfig?.buttonText}
-                    onButtonPress={alertConfig?.onButtonPress}
-                    snapPoints={['35%']}
-                  />
-                  
-                  {/* Double Button Alert Bottom Sheet */}
-                  <DoubleButtonAlert
-                    ref={doubleButtonAlertRef}
-                    onClose={handleCloseDoubleButtonAlert}
-                    icon={doubleButtonConfig?.icon}
-                    heading={doubleButtonConfig?.heading}
-                    text={doubleButtonConfig?.text}
-                    confirmText={doubleButtonConfig?.confirmText}
-                    cancelText={doubleButtonConfig?.cancelText}
-                    onConfirm={doubleButtonConfig?.onConfirm}
-                    onCancel={doubleButtonConfig?.onCancel}
-                    snapPoints={['35%']}
-                  />
                 </KeyboardAvoidingView>
               </SafeAreaView>
-            </GestureHandlerRootView>
-          </ToastProvider>
-        </SafeAreaProvider>
-      </DoubleButtonAlertContext.Provider>
+            )}
+            
+            {/* Bottom sheet positioned absolute to cover entire screen */}
+            <View style={styles.bottomSheetContainer}>
+              <AlertBottomSheet
+                ref={alertSheetRef}
+                onClose={handleCloseAlert}
+                {...alertConfig}
+                snapPoints={alertConfig?.snapPoints || ['50%']}
+              />
+            </View>
+          </GestureHandlerRootView>
+        </ToastProvider>
+      </SafeAreaProvider>
     </AlertSheetContext.Provider>
   );
 }
+
+const styles = StyleSheet.create({
+  container: { 
+    flex: 1, 
+    backgroundColor: COLOR.white 
+  },
+  safeArea: { 
+    flex: 1 
+  },
+  keyboardView: { 
+    flex: 1 
+  },
+  bottomSheetContainer: {
+    position: 'absolute',
+    top: 0,
+    left: 0,
+    right: 0,
+    bottom: 0,
+    pointerEvents: 'box-none',
+  }
+});

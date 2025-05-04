@@ -47,7 +47,18 @@ const CreatePassword = () => {
     // Simulate API call
     setTimeout(() => {
       setIsLoading(false);
-      router.replace("/addVehicleScreen"); 
+      
+      // Check if it's a new password creation or password change
+      if (headingText === "Create New Password") {
+        // Navigate to success screen with createPassword source
+        router.replace({
+          pathname: "/successGlobal",
+          params: { source: "createPassword" }
+        });
+      } else {
+        // Default navigation path for regular password creation
+        router.replace("/addVehicleScreen");
+      }
     }, 1500);
   };
 
@@ -60,7 +71,6 @@ const CreatePassword = () => {
           <TouchableOpacity style={styles.backButton} onPress={handleBack}>
             <Image source={BackIcon} style={styles.backIcon} />
           </TouchableOpacity>
-          
           <View style={styles.headingContainer}>
             <HeadingText text={headingText} textStyles={styles.heading} />
             <RegularText 
@@ -68,7 +78,6 @@ const CreatePassword = () => {
               textStyles={styles.subHeading} 
             />
           </View>
-          
           <View style={styles.formContainer}>
             <InputComponent
               label="Password"
@@ -88,7 +97,6 @@ const CreatePassword = () => {
               showPasswordToggle={true}
               containerStyle={styles.inputContainer}
             />
-            
             {/* Error message */}
             {passwordError ? (
               <View style={styles.errorContainer}>
@@ -134,7 +142,6 @@ const styles = ScaledSheet.create({
   },
   heading: {
     fontSize: "24@ms",
-    marginBottom: "8@vs",
     textAlign: "left",
   },
   subHeading: {

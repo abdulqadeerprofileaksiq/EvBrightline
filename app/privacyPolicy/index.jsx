@@ -1,11 +1,12 @@
 import React from 'react';
-import { View, Text, StyleSheet, SafeAreaView, ScrollView, TouchableOpacity } from 'react-native';
-import { Ionicons } from '@expo/vector-icons';
+import { View, StyleSheet, SafeAreaView, ScrollView } from 'react-native';
+import Header from '../../components/global/Header';
+import { useRouter } from 'expo-router';
+import HeadingText from '../../components/global/HeadingText';
+import RegularText from '../../components/global/RegularText';
 
-const PrivacyPolicyScreen = ({ navigation }) => {
-  const goBack = () => {
-    navigation.goBack();
-  };
+const PrivacyPolicyScreen = () => {
+  const router = useRouter();
 
   const policyItems = [
     {
@@ -52,21 +53,22 @@ const PrivacyPolicyScreen = ({ navigation }) => {
 
   return (
     <SafeAreaView style={styles.container}>
-      <View style={styles.header}>
-        <TouchableOpacity onPress={goBack} style={styles.backButton}>
-          <Ionicons name="arrow-back" size={24} color="#000" />
-        </TouchableOpacity>
-        <Text style={styles.headerTitle}>Privacy policy</Text>
-      </View>
+      <Header text="Privacy policy" />
       
       <ScrollView style={styles.content}>
         {policyItems.map((item) => (
           <View key={item.id} style={styles.section}>
-            <Text style={styles.sectionTitle}>{item.id}- {item.title}</Text>
+            <HeadingText 
+              text={`${item.id}- ${item.title}`}
+              textStyles={styles.sectionTitle}
+            />
             {item.points.map((point, index) => (
               <View key={index} style={styles.pointContainer}>
                 <View style={styles.bullet} />
-                <Text style={styles.pointText}>{point}</Text>
+                <RegularText 
+                  text={point}
+                  textStyles={styles.pointText}
+                />
               </View>
             ))}
           </View>
@@ -82,23 +84,6 @@ const styles = StyleSheet.create({
     flex: 1,
     backgroundColor: '#FFFFFF',
   },
-  header: {
-    flexDirection: 'row',
-    alignItems: 'center',
-    paddingVertical: 12,
-    paddingHorizontal: 16,
-    borderBottomWidth: 1,
-    borderBottomColor: '#EEEEEE',
-  },
-  backButton: {
-    padding: 4,
-  },
-  headerTitle: {
-    fontSize: 18,
-    fontWeight: '600',
-    marginLeft: 12,
-    color: '#000000',
-  },
   content: {
     flex: 1,
     paddingHorizontal: 16,
@@ -107,10 +92,10 @@ const styles = StyleSheet.create({
     marginTop: 24,
   },
   sectionTitle: {
-    fontSize: 16,
-    fontWeight: '700',
+    fontSize: 18,
     marginBottom: 12,
     color: '#000000',
+    textAlign: 'left',
   },
   pointContainer: {
     flexDirection: 'row',
@@ -127,9 +112,10 @@ const styles = StyleSheet.create({
   },
   pointText: {
     flex: 1,
-    fontSize: 14,
+    fontSize: 16,
     lineHeight: 20,
     color: '#222222',
+    textAlign: 'left',
   },
   bottomSpace: {
     height: 32,

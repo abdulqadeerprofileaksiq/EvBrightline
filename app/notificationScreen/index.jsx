@@ -6,6 +6,7 @@ import { MaterialCommunityIcons, FontAwesome5 } from '@expo/vector-icons';
 import { COLOR } from '../../constants/colors';
 import { FONT } from '../../constants/font';
 import Header from '../../components/global/Header';
+import NoResult from '../../components/global/NoResult';
 
 const NotificationScreen = () => {
   const router = useRouter();
@@ -39,6 +40,7 @@ const NotificationScreen = () => {
       read: true,
       type: 'charging'
     }
+    
   ];
 
   const filteredNotifications = () => {
@@ -68,7 +70,13 @@ const NotificationScreen = () => {
   const renderNotificationItem = ({ item }) => (
     <View style={[
       styles.notificationItem,
-      item.type === 'payment' ? { backgroundColor: 'rgba(249, 173, 90, 0.05)' } : {}
+      // Apply special styling only to unread notifications
+      !item.read ? {
+        backgroundColor: 'rgba(249, 173, 90, 0.1)', // Amber with 10% opacity
+        borderRadius: '8@s',
+        borderBottomWidth: 0, // Remove border for unread items
+        marginBottom: '8@vs',
+      } : {}
     ]}>
       {renderNotificationIcon(item.icon)}
       
@@ -83,51 +91,74 @@ const NotificationScreen = () => {
     </View>
   );
 
+  const hasNotifications = notifications.length > 0;
+
+  const handleNotificationSettings = () => {
+    console.log('Navigating to Notification Settings');
+  };
+
   return (
-    <View style={styles.container}>
-      <StatusBar backgroundColor={COLOR.white} barStyle="dark-content" />
-      
+    <>
       <Header text="Notification" />
-      
-      {/* Tabs */}
-      <View style={styles.tabContainer}>
-        {['All', 'Unread', 'Read'].map(tab => (
-          <TouchableOpacity 
-            key={tab} 
-            style={[
-              styles.tabButton, 
-              activeTab === tab ? styles.activeTab : {}
+      <View style={styles.container}>      
+        
+        {/* Only show tabs if there are notifications */}
+        {hasNotifications && (
+          <View style={styles.tabContainer}>
+            {['All', 'Unread', 'Read'].map(tab => (
+              <TouchableOpacity 
+                key={tab} 
+                style={[
+                  styles.tabButton, 
+                  activeTab === tab ? styles.activeTab : {}
+                ]}
+                onPress={() => setActiveTab(tab)}
+              >
+                <Text style={[
+                  styles.tabText,
+                  activeTab === tab ? styles.activeTabText : {}
+                ]}>
+                  {tab}
+                </Text>
+              </TouchableOpacity>
+            ))}
+          </View>
+        )}
+        
+        {/* Notifications List or Empty State */}
+        {hasNotifications ? (
+          <FlatList
+            data={filteredNotifications()}
+            renderItem={renderNotificationItem}
+            keyExtractor={item => item.id}
+            contentContainerStyle={[
+              styles.notificationsList,
+              { paddingTop: 16 }  // Add space at the top of the list
             ]}
-            onPress={() => setActiveTab(tab)}
-          >
-            <Text style={[
-              styles.tabText,
-              activeTab === tab ? styles.activeTabText : {}
-            ]}>
-              {tab}
-            </Text>
-          </TouchableOpacity>
-        ))}
+            showsVerticalScrollIndicator={false}
+            refreshing={false}
+            onRefresh={() => console.log('Refreshing notifications')}
+          />
+        ) : (
+          <NoResult
+            image={require('../../assets/images/bell.png')}
+            title="No New Notifications!"
+            message="Stay turned! Notifications about your activity will show up here."
+            showButton={true}
+            buttonText="Notification Setting"
+            onButtonPress={handleNotificationSettings}
+          />
+        )}
       </View>
-      
-      {/* Notifications List */}
-      <FlatList
-        data={filteredNotifications()}
-        renderItem={renderNotificationItem}
-        keyExtractor={item => item.id}
-        contentContainerStyle={styles.notificationsList}
-        showsVerticalScrollIndicator={false}
-      />
-    </View>
+    </>
   );
 };
 
 const styles = ScaledSheet.create({
   container: {
     flex: 1,
-    backgroundColor: COLOR.white,    paddingHorizontal: '16@s',
-
-    
+    backgroundColor: COLOR.white,   
+    paddingHorizontal: '16@s',    
   },
   tabContainer: {
     flexDirection: 'row',
@@ -135,6 +166,7 @@ const styles = ScaledSheet.create({
     borderBottomColor: COLOR.lightGray,
     backgroundColor: COLOR.white,
     paddingHorizontal: '16@s',
+    marginBottom: '12@vs', // Add space below tabs
   },
   tabButton: {
     flex: 1,
@@ -142,7 +174,7 @@ const styles = ScaledSheet.create({
     alignItems: 'center',
   },
   activeTab: {
-    borderBottomWidth: 2,
+    borderBottomWidth: 1,
     borderBottomColor: COLOR.amber,
   },
   tabText: {
@@ -161,7 +193,8 @@ const styles = ScaledSheet.create({
     flexDirection: 'row',
     padding: '16@s',
     borderBottomWidth: 1,
-    borderBottomColor: COLOR.lightestGray,
+    borderBottomColor: COLOR.lightGray,
+    marginBottom: '8@vs',
   },
   iconContainer: {
     width: '40@s',
@@ -201,6 +234,9 @@ const styles = ScaledSheet.create({
     fontSize: '12@ms',
     color: COLOR.mediumGray,
     marginTop: '4@vs',
+  },
+  emptyList: {
+    flexGrow: 1,
   },
 });
 

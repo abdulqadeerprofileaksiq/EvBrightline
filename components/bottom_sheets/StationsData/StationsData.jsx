@@ -5,12 +5,15 @@ import { COLOR } from "../../../constants/colors";
 import Icon from "react-native-vector-icons/MaterialIcons";
 import Ionicons from "@expo/vector-icons/Ionicons";
 import OpenCloseIndicator from "./openCloseindicator";
+import { useRouter } from "expo-router";
 
 const FivePin = require("../../../assets/images/EV_Chargers/fivepin.png");
 const SevenPin = require("../../../assets/images/EV_Chargers/sevenpin.png");
 const NinePin = require("../../../assets/images/EV_Chargers/ninepin.png");
 
 const StationsData = ({ stationData, onLocationPress }) => {
+  const router = useRouter();
+
   const defaultData = {
     name: "Veen Charging Station",
     location: "Colorado 81210, United States",
@@ -49,6 +52,15 @@ const StationsData = ({ stationData, onLocationPress }) => {
   const handleLocationPress = () => {
     if (onLocationPress) {
       onLocationPress(data);
+    } else {
+      router.push({
+        pathname: "/[stationDetails]",
+        params: { 
+          stationDetails: data.name,
+          stationId: data.id || "default",
+          stationData: JSON.stringify(data)
+        }
+      });
     }
   };
 

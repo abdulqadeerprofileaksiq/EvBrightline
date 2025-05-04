@@ -17,7 +17,6 @@ function Battery() {
   const showAlert = useContext(AlertSheetContext);
   const [selectedPort, setSelectedPort] = useState('4');
   
-  // Port options
   const portOptions = [
     { label: '1', value: '1' },
     { label: '2', value: '2' },
@@ -42,6 +41,22 @@ function Battery() {
       text: "It looks like your EV charger isn't securely connected. Check the plug, secure it, and give it another go!",
       buttonText: "Try Again",
       onButtonPress: handleSecondaryAlert
+    });
+  };
+
+  // New handler specifically for slide button completion
+  const handleSlideComplete = () => {
+    showAlert({
+      image: require('../../assets/images/shockwave.png'),
+      heading: "Ready to wrap up?",
+      text: "Are you sure you want to end charging now?",
+      buttonText: "Yes",
+      secondaryButtonText: "No",
+      primaryButtonStyle: { backgroundColor: COLOR.purple },
+      onButtonPress: () => {
+        console.log("Charging ended by user");
+        // Add any additional logic for ending charging session
+      }
     });
   };
 
@@ -109,7 +124,7 @@ function Battery() {
         <View style={styles.slideButtonContainer}>
           <SlideButoon 
             title="Slide to finish now"
-            onComplete={handleShowSheet}
+            onComplete={handleSlideComplete} // Changed to use the new handler
           />
         </View>
       </View>

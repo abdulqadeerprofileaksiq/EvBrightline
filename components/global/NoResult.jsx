@@ -50,7 +50,8 @@ const styles = ScaledSheet.create({
     flex: 1,
     justifyContent: 'center',
     alignItems: 'center',
-    paddingHorizontal: '43@s',
+    paddingHorizontal: '38@s',
+    paddingBottom: '50@vs',
   },
   image: {
     width: '160@s',

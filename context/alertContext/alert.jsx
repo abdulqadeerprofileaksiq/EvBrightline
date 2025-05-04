@@ -17,7 +17,8 @@ const AlertBottomSheet = React.forwardRef(
       secondaryButtonText,
       onButtonPress,
       onSecondaryButtonPress,
-      snapPoints = ['35%'], 
+      snapPoints = ['35%'],
+      primaryButtonStyle, // Add support for custom button style
     },
     ref
   ) => {
@@ -71,7 +72,12 @@ const AlertBottomSheet = React.forwardRef(
         enablePanDownToClose
         backdropComponent={renderBackdrop}
         style={{ zIndex: 9999, elevation: 9999 }}
-        handleStyle={{ backgroundColor: COLOR.white }}
+        handleStyle={{ 
+          backgroundColor: COLOR.white,
+          width: '40%',
+          alignSelf: 'center',
+          height: 5
+        }}
       >
         <BottomSheetView>
           {/* Main content container with all items */}
@@ -111,7 +117,7 @@ const AlertBottomSheet = React.forwardRef(
                 
                 {/* Primary Button (Yes) on right */}
                 <TouchableOpacity 
-                  style={styles.primaryButton} 
+                  style={[styles.primaryButton, primaryButtonStyle]} 
                   onPress={handleButtonPress}
                 >
                   <HeadingText text={buttonText} textStyles={styles.primaryButtonText} />
@@ -119,7 +125,10 @@ const AlertBottomSheet = React.forwardRef(
               </View>
             ) : (
               /* Single Button */
-              <TouchableOpacity style={styles.button} onPress={handleButtonPress}>
+              <TouchableOpacity 
+                style={[styles.button, primaryButtonStyle]} 
+                onPress={handleButtonPress}
+              >
                 <HeadingText text={buttonText} textStyles={styles.buttonText} />
               </TouchableOpacity>
             )}
@@ -133,9 +142,7 @@ const AlertBottomSheet = React.forwardRef(
 const styles = StyleSheet.create({
   contentContainer: {
     alignItems: 'center',
-    padding: 20,
-    gap: 10,
-    width: '100%',
+    padding: 40,
   },
   mainContent: {
     alignItems: 'center',

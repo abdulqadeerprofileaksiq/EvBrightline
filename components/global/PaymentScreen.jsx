@@ -22,9 +22,9 @@ import LoginButton from "../../components/global/Button";
 import DropDown from "../../components/global/DropDown";
 import countryList from 'react-select-country-list';
 import { Entypo } from '@expo/vector-icons'; // Keep only Entypo for the dots
+import Header from "./Header";
 
 // Import assets
-import BackIcon from "../../assets/images/back.png";
 // Import payment assets
 import CreditCardIcon from "../../assets/images/payment/creditcard.png";
 import AfterPayIcon from "../../assets/images/payment/Afterpay.png";
@@ -35,7 +35,12 @@ import PaypalIcon from "../../assets/images/payment/paypal.png";
 import CVVIcon from "../../assets/images/payment/cvv.png";
 // #endregion
 
-const PaymentScreen = ({ onBack }) => {
+const PaymentScreen = ({ 
+  onBack,
+  showSkip = true,      // Control skip button visibility
+  showHeader = true,    // Control header visibility
+  headerTitle = ""
+}) => {
   const router = useRouter();
   // #region State Management
   const [fullName, setFullName] = useState("");
@@ -80,7 +85,10 @@ const PaymentScreen = ({ onBack }) => {
   };
 
   const handleSkip = () => {
-    router.push("/successScreen");
+    router.push({
+      pathname: "/successGlobal",
+      params: { source: "payment" }
+    });
   };
   
   const handleBack = () => {
@@ -114,16 +122,19 @@ const PaymentScreen = ({ onBack }) => {
   // #region Render
   return (
     <View style={styles.container}>
+      {/* Header */}
+      {showHeader && (
+          <Header 
+            text={headerTitle}
+            onBack={handleBack}
+          />
+        )}
       <ScrollView 
         showsVerticalScrollIndicator={false}
         contentContainerStyle={styles.scrollContent}
         keyboardShouldPersistTaps="handled"
         bounces={false}
-      >
-        {/* Back Button */}
-        <TouchableOpacity style={styles.backButton} onPress={handleBack}>
-          <Image source={BackIcon} style={styles.backIcon} />
-        </TouchableOpacity>
+      >        
 
         {/* Heading Section */}
         <View style={styles.headingContainer}>
@@ -281,14 +292,16 @@ const PaymentScreen = ({ onBack }) => {
             isLoading={isLoading}
           />
           
-          <View style={styles.skipButtonWrapper}>
-            <TouchableOpacity onPress={handleSkip}>
-              <RegularText
-                text="Skip for now"
-                textStyles={styles.skipButtonText}
-              />
-            </TouchableOpacity>
-          </View>
+          {showSkip && (
+            <View style={styles.skipButtonWrapper}>
+              <TouchableOpacity onPress={handleSkip}>
+                <RegularText
+                  text="Skip for now"
+                  textStyles={styles.skipButtonText}
+                />
+              </TouchableOpacity>
+            </View>
+          )}
         </View>
       </ScrollView>
     </View>
@@ -306,13 +319,6 @@ const styles = StyleSheet.create({
     flexGrow: 1,
     paddingHorizontal: scale(16),
     paddingBottom: moderateVerticalScale(40),
-  },
-  backButton: {
-    marginBottom: moderateVerticalScale(20),
-  },
-  backIcon: {
-    width: scale(41),
-    height: scale(41),
   },
   headingContainer: {
     marginBottom: moderateVerticalScale(30),

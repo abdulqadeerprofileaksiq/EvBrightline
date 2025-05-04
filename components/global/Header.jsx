@@ -11,20 +11,41 @@ import { COLOR } from '../../constants/colors';
 const Header = ({ 
   text = "", 
   dark = false,
+  transparent = false, // New prop for transparent background
   showAddNew = false,
-  onAddNew = () => {} 
+  onAddNew = () => {},
+  onBack
 }) => {
   const router = useRouter();
+  
+  const handleBack = () => {
+    if (onBack) {
+      onBack();
+    } else {
+      router.back();
+    }
+  };
+  
   return (
-    <View style={styles.headerContainer}>
-      <TouchableOpacity onPress={() => router.back()}>
+    <View style={[
+      styles.headerContainer,
+      transparent && styles.transparentHeader
+    ]}>
+      <TouchableOpacity onPress={handleBack}>
         <Image
-          source={dark ? BackDarkIcon : BackIcon}
+          // Use white back icon when transparent and not dark
+          source={transparent && !dark ? BackIcon : dark ? BackDarkIcon : BackIcon}
           style={styles.backIcon}
         />
       </TouchableOpacity>
       <View style={styles.headingWrapper}>
-        <HeadingText text={text} textStyles={{ fontSize: 16, textAlign: 'left' }} />
+        <HeadingText 
+          text={text} 
+          textStyles={[
+            { fontSize: 16, textAlign: 'left' },
+            transparent && { color: '#fff' } // Always white text when transparent
+          ]} 
+        />
       </View>
       {showAddNew ? (
         <TouchableOpacity 
@@ -70,6 +91,9 @@ const styles = ScaledSheet.create({
     fontFamily: FONT.semiBold,
     fontSize: '16@ms',
     color: COLOR.amber,
+  },
+  transparentHeader: {
+    backgroundColor: 'transparent',
   },
 });
 

@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useContext } from 'react';
 import { View, Text, Image, StyleSheet, TouchableOpacity, SafeAreaView, ScrollView } from 'react-native';
 import { ScaledSheet } from 'react-native-size-matters';
 import { Ionicons, FontAwesome5, MaterialIcons, MaterialCommunityIcons, Feather } from '@expo/vector-icons';
@@ -6,9 +6,11 @@ import COLOR from '../../constants/colors';
 import HeadingText from '../../components/global/HeadingText';
 import RegularText from '../../components/global/RegularText';
 import { router } from 'expo-router';
-
+import { AlertSheetContext } from '../../app/_layout';
 
 const Profile = () => {
+  const showAlert = useContext(AlertSheetContext);
+
   const menuItems = [
     {
       id: 1,
@@ -55,6 +57,22 @@ const Profile = () => {
     },
   ];
 
+  const handleLogout = () => {
+    showAlert({
+      heading: "Logout Account",
+      text: "Are you sure you want to logout your account?",
+      buttonText: "Yes",
+      secondaryButtonText: "No",
+      image: require('../../assets/images/logout.png'),
+      onButtonPress: () => {
+        console.log("Logging out...");
+        // Redirect to login screen after logout
+        router.push('/loginScreen');
+      },
+      primaryButtonStyle: { backgroundColor: COLOR.red },
+    });
+  };
+
   const renderMenuItem = (item) => {
     const itemColor = '#F9AD5A';
     
@@ -64,6 +82,12 @@ const Profile = () => {
         <TouchableOpacity
           style={styles.menuItem}
           onPress={() => {
+            // Handle logout separately
+            if (item.route === 'Logout') {
+              handleLogout();
+              return;
+            }
+            
             // Navigate based on route name
             switch(item.route) {
               case 'Vehicles':
@@ -76,18 +100,13 @@ const Profile = () => {
                 router.push('/transactionHistory');
                 break;
               case 'Preferences':
-                router.push('/preferences');
+                router.push('/preferencesScreen');
                 break;
               case 'UpdatePassword':
                 router.push('/updatePassword');
                 break;
               case 'Privacy':
                 router.push('/privacyPolicy');
-                break;
-              case 'Logout':
-                // Handle logout functionality
-                console.log('Logging out...');
-                // Add actual logout logic here
                 break;
               default:
                 console.log(`Navigating to ${item.route}`);

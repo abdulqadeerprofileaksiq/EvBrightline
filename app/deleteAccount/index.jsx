@@ -1,4 +1,4 @@
-import React, { useContext } from 'react';
+import React, { useState, useContext } from 'react';
 import { View } from 'react-native';
 import { ScaledSheet } from 'react-native-size-matters';
 import { COLOR } from '../../constants/colors';
@@ -7,26 +7,35 @@ import Button from '../../components/global/Button';
 import HeadingText from '../../components/global/HeadingText';
 import RegularText from '../../components/global/RegularText';
 import { useRouter } from 'expo-router';
-import { DoubleButtonAlertContext } from '../_layout';
+import { AlertSheetContext } from '../_layout';
 
 const DeleteAccount = () => {
   const router = useRouter();
-  const showDoubleButtonAlert = useContext(DoubleButtonAlertContext);
+  const [isDeleting, setIsDeleting] = useState(false);
+  const showAlert = useContext(AlertSheetContext);
 
-  // Handler for delete confirmation
+  // Handler for delete confirmation - using bottom sheet alert
   const handleDeleteConfirm = () => {
     console.log("Delete button pressed");
-    if (showDoubleButtonAlert) {
-      showDoubleButtonAlert({
-        heading: "Confirm Account Deletion",
-        text: "This action cannot be undone. Are you absolutely sure you want to delete your account permanently?",
-        confirmText: "Delete",
-        cancelText: "Cancel",
-        onConfirm: () => {
+    
+    if (showAlert) {
+      showAlert({
+        heading: "Are You Sure You Want to Continue?",
+        text: "This is your final chance! Deleting your account erases all data permanently.",
+        buttonText: "Confirm",
+        secondaryButtonText: "Cancel",
+        image: require('../../assets/images/deletetheaccount.png'),
+        primaryButtonStyle: { backgroundColor: COLOR.red },
+        onButtonPress: () => {
+          setIsDeleting(true);
           // Implementation for account deletion
           console.log('Account deletion confirmed');
-          // After successful deletion, navigate to login screen
-          router.replace('/');
+          
+          // Simulate API call with timeout
+          setTimeout(() => {
+            // After successful deletion, navigate to login screen
+            router.replace('/');
+          }, 1000);
         }
       });
     }
@@ -60,9 +69,10 @@ const DeleteAccount = () => {
       
       <View style={styles.buttonsContainer}>
         <Button 
-          title="Delete"
+          title={isDeleting ? "Deleting..." : "Delete"}
           onPress={handleDeleteConfirm}
-          style={styles.deleteButton}  // Changed from buttonStyle to style
+          style={styles.deleteButton}
+          disabled={isDeleting}
         />
         
         <Button 
@@ -70,6 +80,7 @@ const DeleteAccount = () => {
           onPress={handleGoBack}
           style={styles.goBackButton}
           textStyle={styles.goBackButtonText}
+          disabled={isDeleting}
         />
       </View>
     </View>
