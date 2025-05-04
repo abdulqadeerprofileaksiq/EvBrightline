@@ -1,5 +1,5 @@
 // screens/Battery.js
-import React, { useContext, useState } from 'react';
+import React, { useContext, useState, useRef, useCallback, useMemo } from 'react';
 import { StyleSheet, Text, View, TouchableOpacity, ScrollView, Image } from 'react-native';
 import { Ionicons, MaterialIcons } from '@expo/vector-icons';
 import HeadingText from '../../components/global/HeadingText';
@@ -7,6 +7,8 @@ import COLOR from '../../constants/colors';
 import { AlertSheetContext } from '../../app/_layout';
 import SlideButoon from '../../components/global/SlideButoon';
 import DropDownComponent from '../../components/global/DropDown';
+import BottomSheet, { BottomSheetView, BottomSheetBackdrop } from '@gorhom/bottom-sheet';
+import PaymentScreen from '../../components/global/PaymentScreen';
 
 // Import images
 import chargerImg from '../../assets/images/bottom_sheets/charger.png';
@@ -16,7 +18,30 @@ import purpleCarImg from '../../assets/images/purpleCar.png';
 function Battery() {
   const showAlert = useContext(AlertSheetContext);
   const [selectedPort, setSelectedPort] = useState('4');
-  
+
+  // Create a reference for the payment bottom sheet
+  const paymentBottomSheetRef = useRef(null);
+
+  // Snap points for payment bottom sheet (90% of screen height)
+  const paymentSnapPoints = useMemo(() => ['90%'], []);
+
+  // Render backdrop for payment bottom sheet
+  const renderPaymentBackdrop = useCallback(props => (
+    <BottomSheetBackdrop
+      {...props}
+      disappearsOnIndex={-1}
+      appearsOnIndex={0}
+      opacity={0.5}
+      enableTouchThrough={false}
+      pressBehavior="close"
+    />
+  ), []);
+
+  // Handle payment bottom sheet close
+  const handleClosePaymentSheet = () => {
+    paymentBottomSheetRef.current?.close();
+  };
+
   const portOptions = [
     { label: '1', value: '1' },
     { label: '2', value: '2' },
@@ -29,7 +54,13 @@ function Battery() {
       image: cardImg,
       heading: "Link Payment Method",
       text: "No card found. Add one to power your ride!",
-      buttonText: "Add"
+      buttonText: "Add",
+      onButtonPress: () => {
+        // Close the alert and show payment bottom sheet
+        setTimeout(() => {
+          paymentBottomSheetRef.current?.snapToIndex(0);
+        }, 500);
+      }
     });
   };
 
@@ -55,80 +86,100 @@ function Battery() {
       primaryButtonStyle: { backgroundColor: COLOR.purple },
       onButtonPress: () => {
         console.log("Charging ended by user");
-        // Add any additional logic for ending charging session
       }
     });
   };
 
   return (
-    <ScrollView 
-      style={styles.container}
-      contentContainerStyle={styles.scrollContainer}
-      showsVerticalScrollIndicator={false}
-    >
-      <View style={styles.content}>
-        <View style={styles.stationInfo}>
-          <HeadingText text="Veen Charging Station" textStyles={styles.stationName} />
-          <View style={styles.locationRow}>
-            <Ionicons name="location-outline" size={16} color="#666" />
-            <Text style={styles.locationText}>21212 Co Rd 742, Almont, United States</Text>
+    <>
+      <ScrollView 
+        style={styles.container}
+        contentContainerStyle={styles.scrollContainer}
+        showsVerticalScrollIndicator={false}
+      >
+        <View style={styles.content}>
+          <View style={styles.stationInfo}>
+            <HeadingText text="Veen Charging Station" textStyles={styles.stationName} />
+            <View style={styles.locationRow}>
+              <Ionicons name="location-outline" size={16} color="#666" />
+              <Text style={styles.locationText}>21212 Co Rd 742, Almont, United States</Text>
+            </View>
           </View>
-        </View>
-        
-        <HeadingText text="100%" textStyles={styles.percentageText} />
-        
-        <View style={styles.carContainer}>
-          <View style={styles.carBackground}>
-            <Image
-              source={purpleCarImg}
-              style={styles.carImage}
-              resizeMode="contain"
+          
+          <HeadingText text="100%" textStyles={styles.percentageText} />
+          
+          <View style={styles.carContainer}>
+            <View style={styles.carBackground}>
+              <Image
+                source={purpleCarImg}
+                style={styles.carImage}
+                resizeMode="contain"
+              />
+            </View>
+          </View>
+          
+          <HeadingText text="0%" textStyles={styles.percentageText} />
+          
+          <HeadingText text="Connect Charger" textStyles={styles.connectText} />
+          <Text style={styles.remainingText}>Time remaining to full charge</Text>
+          
+          <Text style={styles.timerText}>00:00:00</Text>
+          
+          <View style={styles.infoBar}>
+            <View style={styles.infoItem}>
+              <HeadingText text="Charging Time" textStyles={styles.infoLabel} />
+              <HeadingText text="--" textStyles={styles.infoValue} />
+            </View>
+            <View style={styles.infoItem}>
+              <HeadingText text="Capacity Range" textStyles={styles.infoLabel} />
+              <HeadingText text="--" textStyles={styles.infoValue} />
+            </View>
+            <View style={styles.infoItem}>
+              <HeadingText text="Total Cost" textStyles={styles.infoLabel} />
+              <HeadingText text="--" textStyles={styles.infoValue} />
+            </View>
+          </View>        
+          <DropDownComponent 
+            label="Select Port"
+            value={selectedPort}
+            onSelect={setSelectedPort}
+            options={portOptions}
+            containerStyle={styles.dropdownContainer}
+          />
+          
+          <TouchableOpacity style={styles.startButton} onPress={handleShowSheet}>
+            <Text style={styles.startButtonText}>Start Charging</Text>
+          </TouchableOpacity>
+          
+          {/* Add slide button below */}
+          <View style={styles.slideButtonContainer}>
+            <SlideButoon 
+              title="Slide to finish now"
+              onComplete={handleSlideComplete} // Changed to use the new handler
             />
           </View>
         </View>
-        
-        <HeadingText text="0%" textStyles={styles.percentageText} />
-        
-        <HeadingText text="Connect Charger" textStyles={styles.connectText} />
-        <Text style={styles.remainingText}>Time remaining to full charge</Text>
-        
-        <Text style={styles.timerText}>00:00:00</Text>
-        
-        <View style={styles.infoBar}>
-          <View style={styles.infoItem}>
-            <HeadingText text="Charging Time" textStyles={styles.infoLabel} />
-            <HeadingText text="--" textStyles={styles.infoValue} />
-          </View>
-          <View style={styles.infoItem}>
-            <HeadingText text="Capacity Range" textStyles={styles.infoLabel} />
-            <HeadingText text="--" textStyles={styles.infoValue} />
-          </View>
-          <View style={styles.infoItem}>
-            <HeadingText text="Total Cost" textStyles={styles.infoLabel} />
-            <HeadingText text="--" textStyles={styles.infoValue} />
-          </View>
-        </View>        
-        <DropDownComponent 
-          label="Select Port"
-          value={selectedPort}
-          onSelect={setSelectedPort}
-          options={portOptions}
-          containerStyle={styles.dropdownContainer}
-        />
-        
-        <TouchableOpacity style={styles.startButton} onPress={handleShowSheet}>
-          <Text style={styles.startButtonText}>Start Charging</Text>
-        </TouchableOpacity>
-        
-        {/* Add slide button below */}
-        <View style={styles.slideButtonContainer}>
-          <SlideButoon 
-            title="Slide to finish now"
-            onComplete={handleSlideComplete} // Changed to use the new handler
+      </ScrollView>
+
+      {/* Payment Bottom Sheet */}
+      <BottomSheet
+        ref={paymentBottomSheetRef}
+        index={-1}
+        snapPoints={paymentSnapPoints}
+        enablePanDownToClose
+        backdropComponent={renderPaymentBackdrop}
+        style={{ zIndex: 9999 }}
+      >
+        <BottomSheetView style={styles.bottomSheetContent}>
+          <PaymentScreen 
+            onBack={handleClosePaymentSheet}
+            showSkip={false}
+            showHeader={false}
+            headerTitle="Link Payment Method"
           />
-        </View>
-      </View>
-    </ScrollView>
+        </BottomSheetView>
+      </BottomSheet>
+    </>
   );
 }
 
@@ -245,7 +296,9 @@ const styles = StyleSheet.create({
     fontSize: 16,
     fontWeight: 'bold',
   },
-  
+  bottomSheetContent: {
+    flex: 1,
+  },
 });
 
 export default Battery;
