@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import { View, Text, Image, TouchableOpacity } from 'react-native';
+import { SafeAreaView } from 'react-native-safe-area-context';
 import { ScaledSheet } from 'react-native-size-matters';
 import { scale, moderateScale, verticalScale } from 'react-native-size-matters';
 import { COLOR } from '../../constants/colors';
@@ -30,75 +31,81 @@ const EditProfile = () => {
   };
 
   return (
-    <View style={styles.container}>
-      <Header text="Edit Profile" />
-      
-      {/* Profile Image Section */}
-      <View style={styles.profileImageContainer}>
-        <View style={styles.profilePositionWrapper}>
-          <View style={styles.profileImageWrapper}>
-            <Image
-              source={require('../../assets/images/profile-pic.jpg')} 
-              style={styles.profileImage}
-            />
+    <SafeAreaView style={styles.safeArea}>
+      <View style={styles.container}>
+        <Header text="Edit Profile" />
+        
+        {/* Profile Image Section */}
+        <View style={styles.profileImageContainer}>
+          <View style={styles.profilePositionWrapper}>
+            <View style={styles.profileImageWrapper}>
+              <Image
+                source={require('../../assets/images/profile-pic.jpg')} 
+                style={styles.profileImage}
+              />
+            </View>
+            <TouchableOpacity style={styles.editIconButton}>
+              <Text style={styles.plusIcon}>+</Text>
+            </TouchableOpacity>
           </View>
-          <TouchableOpacity style={styles.editIconButton}>
-            <Text style={styles.plusIcon}>+</Text>
+          <HeadingText text={fullName} textStyles={styles.userName} />
+        </View>
+        
+        {/* Form Fields */}
+        <View style={styles.formContainer}>
+          <InputComponent
+            label="Full Name"
+            value={fullName}
+            onChangeText={setFullName}
+            containerStyle={styles.inputContainer}
+            autoCapitalize="words"
+          />
+          
+          <View style={styles.emailContainer}>
+            <InputComponent
+              label="Email"
+              value={email}
+              onChangeText={setEmail}
+              containerStyle={styles.inputContainer}
+              keyboardType="email-address"
+            />
+            <View style={styles.verifiedBadge}>
+              <HeadingText text="Verified" textStyles={styles.verifiedText} />
+            </View>
+          </View>
+          
+          <InputComponent
+            label="Phone Number" // Changed to be more consistent
+            placeholder="Enter your phone number"
+            value={phoneNumber}
+            onChangeText={setPhoneNumber}
+            containerStyle={styles.inputContainer}
+            keyboardType="phone-pad"
+          />
+        </View>
+        
+        {/* Action Buttons */}
+        <View style={styles.actionContainer}>
+          <Button 
+            title="Save Changes" 
+            onPress={handleSaveChanges}
+            buttonStyle={styles.saveButton} // Changed to buttonStyle to match Button component props
+          />
+          
+          <TouchableOpacity onPress={handleDeleteAccount} style={styles.deleteButton}>
+            <RegularText text="Delete Account" textStyles={styles.deleteText} />
           </TouchableOpacity>
         </View>
-        <HeadingText text={fullName} textStyles={styles.userName} />
       </View>
-      
-      {/* Form Fields */}
-      <View style={styles.formContainer}>
-        <InputComponent
-          label="Full Name"
-          value={fullName}
-          onChangeText={setFullName}
-          containerStyle={styles.inputContainer}
-          autoCapitalize="words"
-        />
-        
-        <View style={styles.emailContainer}>
-          <InputComponent
-            label="Email"
-            value={email}
-            onChangeText={setEmail}
-            containerStyle={styles.inputContainer}
-            keyboardType="email-address"
-          />
-          <View style={styles.verifiedBadge}>
-            <HeadingText text="Verified" textStyles={styles.verifiedText} />
-          </View>
-        </View>
-        
-        <InputComponent
-          label="Phone Number" // Changed to be more consistent
-          placeholder="Enter your phone number"
-          value={phoneNumber}
-          onChangeText={setPhoneNumber}
-          containerStyle={styles.inputContainer}
-          keyboardType="phone-pad"
-        />
-      </View>
-      
-      {/* Action Buttons */}
-      <View style={styles.actionContainer}>
-        <Button 
-          title="Save Changes" 
-          onPress={handleSaveChanges}
-          buttonStyle={styles.saveButton} // Changed to buttonStyle to match Button component props
-        />
-        
-        <TouchableOpacity onPress={handleDeleteAccount} style={styles.deleteButton}>
-          <RegularText text="Delete Account" textStyles={styles.deleteText} />
-        </TouchableOpacity>
-      </View>
-    </View>
+    </SafeAreaView>
   );
 };
 
 const styles = ScaledSheet.create({
+  safeArea: {
+    flex: 1,
+    backgroundColor: 'white',
+  },
   container: {
     flex: 1,
     backgroundColor: 'white',

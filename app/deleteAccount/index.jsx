@@ -1,5 +1,6 @@
 import React, { useState, useContext } from 'react';
 import { View } from 'react-native';
+import { SafeAreaView } from 'react-native-safe-area-context';
 import { ScaledSheet } from 'react-native-size-matters';
 import { COLOR } from '../../constants/colors';
 import Header from '../../components/global/Header';
@@ -47,47 +48,53 @@ const DeleteAccount = () => {
   };
 
   return (
-    <View style={styles.container}>
-      <Header text="Delete account" />
-      
-      <View style={styles.contentContainer}>
-        <HeadingText 
-          text="Are you sure you want to say goodbye?"
-          textStyles={styles.headingText}
-        />
+    <SafeAreaView style={styles.safeArea}>
+      <View style={styles.container}>
+        <Header text="Delete account" />
         
-        <RegularText 
-          text="Deleting your account is a permanent action. This means all your profile details, preferences, saved content, and activity history will be erased forever—no turning back."
-          textStyles={styles.descriptionText}
-        />
+        <View style={styles.contentContainer}>
+          <HeadingText 
+            text="Are you sure you want to say goodbye?"
+            textStyles={styles.headingText}
+          />
+          
+          <RegularText 
+            text="Deleting your account is a permanent action. This means all your profile details, preferences, saved content, and activity history will be erased forever—no turning back."
+            textStyles={styles.descriptionText}
+          />
+          
+          <RegularText 
+            text="We're sad to see you go, but we respect your decision. Before proceeding, take a moment to ensure this is what you truly want."
+            textStyles={styles.warningText}
+          />
+        </View>
         
-        <RegularText 
-          text="We're sad to see you go, but we respect your decision. Before proceeding, take a moment to ensure this is what you truly want."
-          textStyles={styles.warningText}
-        />
+        <View style={styles.buttonsContainer}>
+          <Button 
+            title={isDeleting ? "Deleting..." : "Delete"}
+            onPress={handleDeleteConfirm}
+            style={styles.deleteButton}
+            disabled={isDeleting}
+          />
+          
+          <Button 
+            title="Go Back"
+            onPress={handleGoBack}
+            style={styles.goBackButton}
+            textStyle={styles.goBackButtonText}
+            disabled={isDeleting}
+          />
+        </View>
       </View>
-      
-      <View style={styles.buttonsContainer}>
-        <Button 
-          title={isDeleting ? "Deleting..." : "Delete"}
-          onPress={handleDeleteConfirm}
-          style={styles.deleteButton}
-          disabled={isDeleting}
-        />
-        
-        <Button 
-          title="Go Back"
-          onPress={handleGoBack}
-          style={styles.goBackButton}
-          textStyle={styles.goBackButtonText}
-          disabled={isDeleting}
-        />
-      </View>
-    </View>
+    </SafeAreaView>
   );
 };
 
 const styles = ScaledSheet.create({
+  safeArea: {
+    flex: 1,
+    backgroundColor: 'white',
+  },
   container: {
     flex: 1,
     backgroundColor: 'white',
