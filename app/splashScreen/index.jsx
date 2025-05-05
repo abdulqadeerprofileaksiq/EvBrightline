@@ -26,7 +26,7 @@ export default function SplashScreen() {
 
   return (
     <>
-    <StatusBar style="dark" backgroundColor={COLOR.darkGray} />
+    <StatusBar style="dark" />
       <View style={styles.container}>
         <Animated.Image
           source={require("../../assets/images/EV_Logo.png")}

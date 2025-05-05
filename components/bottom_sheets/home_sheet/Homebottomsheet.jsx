@@ -12,9 +12,7 @@ const HomeBottomSheet = ({ onClose }) => {
   // Only two snap points: 40% and 100%
   const snapPoints = useMemo(() => ['40%', '100%'], []);
 
-  const handleSheetChanges = useCallback((index) => {
-    console.log('Bottom sheet changed to index:', index);
-  }, []);
+ 
 
   // Data for stations - memoized to prevent unnecessary re-renders
   const stationsData = useMemo(() => [
@@ -36,7 +34,6 @@ const HomeBottomSheet = ({ onClose }) => {
     <BottomSheet
       ref={bottomSheetRef}
       snapPoints={snapPoints}
-      onChange={handleSheetChanges}
       enablePanDownToClose={false}
       handleStyle={styles.handleStyle}
       handleIndicatorStyle={styles.handleIndicator}

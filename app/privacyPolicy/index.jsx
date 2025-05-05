@@ -1,5 +1,6 @@
 import React from 'react';
-import { View, StyleSheet, SafeAreaView, ScrollView } from 'react-native';
+import { View, StyleSheet, ScrollView } from 'react-native';
+import { SafeAreaView } from 'react-native-safe-area-context';
 import Header from '../../components/global/Header';
 import { useRouter } from 'expo-router';
 import HeadingText from '../../components/global/HeadingText';

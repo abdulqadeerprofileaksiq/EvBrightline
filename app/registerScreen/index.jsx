@@ -1,6 +1,7 @@
 import React, { useState } from "react";
-import { View, TouchableOpacity, Image, StatusBar ,StyleSheet} from "react-native";
-import { ScaledSheet} from "react-native-size-matters";
+import { View, TouchableOpacity, Image, StatusBar, StyleSheet } from "react-native";
+import { SafeAreaView } from "react-native-safe-area-context";
+import { ScaledSheet } from "react-native-size-matters";
 import { COLOR } from "../../constants/colors";
 import HeadingText from "../../components/global/HeadingText";
 import RegularText from "../../components/global/RegularText";
@@ -35,74 +36,72 @@ const RegisterScreen = () => {
   const handleLogin = () => router.navigate("/loginScreen");
 
   return (
-    <>
-      <StatusBar backgroundColor={COLOR.white} barStyle="dark-content" />
-      <View style={styles.container}>
-        <View style={styles.mainContentContainer}>
-          <TouchableOpacity style={styles.backButton} onPress={handleBack}>
-            <Image source={BackIcon} style={styles.backIcon} />
-          </TouchableOpacity>
-          <View style={styles.logoHeader}>
-            <Image source={Logo} style={styles.logoImage} resizeMode="contain" />
-          </View>
-          <HeadingText text="Welcome! Let's Get Started!" textStyles={styles.heading} />
-          <RegularText text="Create your account in just four easy steps." textStyles={styles.subText} />
-          <View style={styles.formContainer}>
-            <InputComponent
-              label="Full name*"
-              placeholder="Enter your full name"
-              value={fullName}
-              onChangeText={setFullName}
-              containerStyle={styles.inputContainer}
-            />
-            <InputComponent
-              label="Email*"
-              placeholder="Enter your email"
-              value={email}
-              onChangeText={setEmail}
-              keyboardType="email-address"
-              containerStyle={styles.inputContainer}
-            />
-            <InputComponent
-              label="Mobile number*"
-              placeholder="Enter your mobile number"
-              value={mobileNumber}
-              onChangeText={setMobileNumber}
-              keyboardType="phone-pad"
-              containerStyle={styles.inputContainer}
-            />
-            <LoginButton
-              style={styles.btn}
-              title="Continue"
-              onPress={handleContinue}
-              isLoading={isLoading}
-            />
-            <View style={styles.socialLoginContainer}>
-              <View style={styles.dividerContainer}>
-                <View style={styles.divider} />
-                <RegularText text="Or Register with" textStyles={styles.dividerText} />
-                <View style={styles.divider} />
-              </View>
-              <View style={styles.socialButtonsRow}>
-                <TouchableOpacity style={styles.socialButton}>
-                  <Image source={GoogleIcon} style={styles.socialIcon} resizeMode="contain" />
-                </TouchableOpacity>
-                <View style={styles.socialButtonGap} />
-                <TouchableOpacity style={styles.socialButton}>
-                  <Image source={AppleIcon} style={styles.socialIcon} resizeMode="contain" />
-                </TouchableOpacity>
-              </View>
+    <SafeAreaView style={styles.container}>
+      <StatusBar barStyle="dark-content" />
+      <View style={styles.mainContentContainer}>
+        <TouchableOpacity style={styles.backButton} onPress={handleBack}>
+          <Image source={BackIcon} style={styles.backIcon} />
+        </TouchableOpacity>
+        <View style={styles.logoHeader}>
+          <Image source={Logo} style={styles.logoImage} resizeMode="contain" />
+        </View>
+        <HeadingText text="Welcome! Let's Get Started!" textStyles={styles.heading} />
+        <RegularText text="Create your account in just four easy steps." textStyles={styles.subText} />
+        <View style={styles.formContainer}>
+          <InputComponent
+            label="Full name*"
+            placeholder="Enter your full name"
+            value={fullName}
+            onChangeText={setFullName}
+            containerStyle={styles.inputContainer}
+          />
+          <InputComponent
+            label="Email*"
+            placeholder="Enter your email"
+            value={email}
+            onChangeText={setEmail}
+            keyboardType="email-address"
+            containerStyle={styles.inputContainer}
+          />
+          <InputComponent
+            label="Mobile number*"
+            placeholder="Enter your mobile number"
+            value={mobileNumber}
+            onChangeText={setMobileNumber}
+            keyboardType="phone-pad"
+            containerStyle={styles.inputContainer}
+          />
+          <LoginButton
+            style={styles.btn}
+            title="Continue"
+            onPress={handleContinue}
+            isLoading={isLoading}
+          />
+          <View style={styles.socialLoginContainer}>
+            <View style={styles.dividerContainer}>
+              <View style={styles.divider} />
+              <RegularText text="Or Register with" textStyles={styles.dividerText} />
+              <View style={styles.divider} />
+            </View>
+            <View style={styles.socialButtonsRow}>
+              <TouchableOpacity style={styles.socialButton}>
+                <Image source={GoogleIcon} style={styles.socialIcon} resizeMode="contain" />
+              </TouchableOpacity>
+              <View style={styles.socialButtonGap} />
+              <TouchableOpacity style={styles.socialButton}>
+                <Image source={AppleIcon} style={styles.socialIcon} resizeMode="contain" />
+              </TouchableOpacity>
             </View>
           </View>
         </View>
-        <View style={styles.footerContainer}>
-          <RegularText text="Already have an account? " textStyles={styles.footerText} />
-          <TouchableOpacity onPress={handleLogin}>
-            <RegularText text="Login Now" textStyles={styles.footerLink} />
-          </TouchableOpacity>
-        </View>
       </View>
-    </>
+      <View style={styles.footerContainer}>
+        <RegularText text="Already have an account? " textStyles={styles.footerText} />
+        <TouchableOpacity onPress={handleLogin}>
+          <RegularText text="Login Now" textStyles={styles.footerLink} />
+        </TouchableOpacity>
+      </View>
+    </SafeAreaView>
   );
 };
 

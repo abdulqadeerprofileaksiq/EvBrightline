@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import { View, ScrollView } from 'react-native';
+import { SafeAreaView } from 'react-native-safe-area-context';
 import { ScaledSheet } from 'react-native-size-matters';
 import { useRouter } from 'expo-router';
 import Header from '../../components/global/Header';
@@ -79,51 +80,57 @@ const MyVehicles = () => {
   };
 
   return (
-    <View style={styles.container}>
-      <Header
-        text="My Vehicles"
-        showAddNew={true}
-        onAddNew={handleAddNewVehicle}
-      />
-
-      {vehicles && vehicles.length > 0 ? (
-        <ScrollView
-          style={styles.scrollView}
-          contentContainerStyle={styles.scrollViewContent}
-          showsVerticalScrollIndicator={false}
-        >
-          {vehicles.map((vehicle, index) => (
-            <Expandable
-              key={vehicle.id}
-              item={vehicle}
-              isExpanded={expandedVehicle === vehicle.id}
-              onPress={handleVehicleClick}
-              onDelete={handleDeleteVehicle}
-              onTogglePrimary={handleTogglePrimary}
-              isFirst={index === 0}
-              deleteTitle="Delete Vehicle"
-              imageStyle={{ width: 64, height: 40 }} // Car image sizing
-              extraFields={[
-                // Example of how to add custom fields if needed
-                // { label: "Custom Field", value: "Custom Value" }
-              ]}
-            />
-          ))}
-        </ScrollView>
-      ) : (
-        <NoResult
-          image={require('../../assets/images/myVehicleImgs/nodataimage.png')}
-          title="No Vehicle Added!"
-          message="You haven't added a vehicle yet! Add one now to easily find and enjoy nearby EV charging stations."
-          showButton={true}
-          buttonText="+Add New"
+    <SafeAreaView style={styles.safeArea}>
+      <View style={styles.container}>
+        <Header
+          text="My Vehicles"
+          showAddNew={true}
+          onAddNew={handleAddNewVehicle}
         />
-      )}
-    </View>
+
+        {vehicles && vehicles.length > 0 ? (
+          <ScrollView
+            style={styles.scrollView}
+            contentContainerStyle={styles.scrollViewContent}
+            showsVerticalScrollIndicator={false}
+          >
+            {vehicles.map((vehicle, index) => (
+              <Expandable
+                key={vehicle.id}
+                item={vehicle}
+                isExpanded={expandedVehicle === vehicle.id}
+                onPress={handleVehicleClick}
+                onDelete={handleDeleteVehicle}
+                onTogglePrimary={handleTogglePrimary}
+                isFirst={index === 0}
+                deleteTitle="Delete Vehicle"
+                imageStyle={{ width: 64, height: 40 }} // Car image sizing
+                extraFields={[
+                  // Example of how to add custom fields if needed
+                  // { label: "Custom Field", value: "Custom Value" }
+                ]}
+              />
+            ))}
+          </ScrollView>
+        ) : (
+          <NoResult
+            image={require('../../assets/images/myVehicleImgs/nodataimage.png')}
+            title="No Vehicle Added!"
+            message="You haven't added a vehicle yet! Add one now to easily find and enjoy nearby EV charging stations."
+            showButton={true}
+            buttonText="+Add New"
+          />
+        )}
+      </View>
+    </SafeAreaView>
   );
 };
 
 const styles = ScaledSheet.create({
+  safeArea: {
+    flex: 1,
+    backgroundColor: COLOR.white,
+  },
   container: {
     flex: 1,
     backgroundColor: COLOR.white,

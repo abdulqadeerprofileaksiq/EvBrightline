@@ -1,5 +1,6 @@
 import React, { useState } from "react";
 import { View, Image, ScrollView, TouchableOpacity } from "react-native";
+import { SafeAreaView } from "react-native-safe-area-context";
 import { ScaledSheet } from "react-native-size-matters";
 import { COLOR } from "../../constants/colors";
 import HeadingText from "../../components/global/HeadingText";
@@ -60,72 +61,78 @@ const UpdatePasswordScreen = () => {
   const handleBack = () => router.back();
 
   return (
-    <View style={styles.container}>
-      <ScrollView showsVerticalScrollIndicator={false} contentContainerStyle={styles.scrollContent}>
-        <View style={styles.mainContentContainer}>
-          <TouchableOpacity style={styles.backButton} onPress={handleBack}>
-            <Image source={BackIcon} style={styles.backIcon} />
-          </TouchableOpacity>
-          
-          <View style={styles.headingContainer}>
-            <HeadingText text="Update Password" textStyles={styles.heading} />
-            <RegularText 
-              text="Your new password must be unique from those previously used." 
-              textStyles={styles.subHeading} 
-            />
-          </View>
-          
-          <View style={styles.formContainer}>
-            <InputComponent
-              label="Current Password"
-              placeholder="Enter your current password"
-              value={formData.currentPassword}
-              onChangeText={(text) => handleInputChange("currentPassword", text)}
-              secureTextEntry={true}
-              showPasswordToggle={true}
-              containerStyle={styles.inputContainer}
-            />
-            <InputComponent
-              label="New Password"
-              placeholder="Enter your new password"
-              value={formData.newPassword}
-              onChangeText={(text) => handleInputChange("newPassword", text)}
-              secureTextEntry={true}
-              showPasswordToggle={true}
-              containerStyle={styles.inputContainer}
-            />
-            <InputComponent
-              label="Confirm New Password"
-              placeholder="Re-enter your new password"
-              value={formData.confirmNewPassword}
-              onChangeText={(text) => handleInputChange("confirmNewPassword", text)}
-              secureTextEntry={true}
-              showPasswordToggle={true}
-              containerStyle={styles.inputContainer}
-            />
+    <SafeAreaView style={styles.safeArea}>
+      <View style={styles.container}>
+        <ScrollView showsVerticalScrollIndicator={false} contentContainerStyle={styles.scrollContent}>
+          <View style={styles.mainContentContainer}>
+            <TouchableOpacity style={styles.backButton} onPress={handleBack}>
+              <Image source={BackIcon} style={styles.backIcon} />
+            </TouchableOpacity>
             
-            {/* Error message */}
-            {passwordError ? (
-              <View style={styles.errorContainer}>
-                <RegularText text={passwordError} textStyles={styles.errorText} />
-              </View>
-            ) : null}
+            <View style={styles.headingContainer}>
+              <HeadingText text="Update Password" textStyles={styles.heading} />
+              <RegularText 
+                text="Your new password must be unique from those previously used." 
+                textStyles={styles.subHeading} 
+              />
+            </View>
             
-            {/* Submit button */}
-            <LoginButton
-              style={styles.btn}
-              title="Update"
-              onPress={handleSubmit}
-              isLoading={isLoading}
-            />
+            <View style={styles.formContainer}>
+              <InputComponent
+                label="Current Password"
+                placeholder="Enter your current password"
+                value={formData.currentPassword}
+                onChangeText={(text) => handleInputChange("currentPassword", text)}
+                secureTextEntry={true}
+                showPasswordToggle={true}
+                containerStyle={styles.inputContainer}
+              />
+              <InputComponent
+                label="New Password"
+                placeholder="Enter your new password"
+                value={formData.newPassword}
+                onChangeText={(text) => handleInputChange("newPassword", text)}
+                secureTextEntry={true}
+                showPasswordToggle={true}
+                containerStyle={styles.inputContainer}
+              />
+              <InputComponent
+                label="Confirm New Password"
+                placeholder="Re-enter your new password"
+                value={formData.confirmNewPassword}
+                onChangeText={(text) => handleInputChange("confirmNewPassword", text)}
+                secureTextEntry={true}
+                showPasswordToggle={true}
+                containerStyle={styles.inputContainer}
+              />
+              
+              {/* Error message */}
+              {passwordError ? (
+                <View style={styles.errorContainer}>
+                  <RegularText text={passwordError} textStyles={styles.errorText} />
+                </View>
+              ) : null}
+              
+              {/* Submit button */}
+              <LoginButton
+                style={styles.btn}
+                title="Update"
+                onPress={handleSubmit}
+                isLoading={isLoading}
+              />
+            </View>
           </View>
-        </View>
-      </ScrollView>
-    </View>
+        </ScrollView>
+      </View>
+    </SafeAreaView>
   );
 };
 
 const styles = ScaledSheet.create({
+  safeArea: {
+    flex: 1,
+    backgroundColor: COLOR.white,
+  },
   container: {
     flex: 1,
     backgroundColor: COLOR.white,

@@ -1,6 +1,7 @@
 // screens/Battery.js
 import React, { useContext, useState, useRef, useCallback, useMemo } from 'react';
 import { StyleSheet, Text, View, TouchableOpacity, ScrollView, Image } from 'react-native';
+import { SafeAreaView } from 'react-native-safe-area-context';
 import { Ionicons, MaterialIcons } from '@expo/vector-icons';
 import HeadingText from '../../components/global/HeadingText';
 import COLOR from '../../constants/colors';
@@ -91,7 +92,7 @@ function Battery() {
   };
 
   return (
-    <>
+    <SafeAreaView style={styles.safeArea}>
       <ScrollView 
         style={styles.container}
         contentContainerStyle={styles.scrollContainer}
@@ -179,11 +180,15 @@ function Battery() {
           />
         </BottomSheetView>
       </BottomSheet>
-    </>
+    </SafeAreaView>
   );
 }
 
 const styles = StyleSheet.create({
+  safeArea: {
+    flex: 1,
+    backgroundColor: '#fff',
+  },
   container: {
     flex: 1,
     backgroundColor: '#fff',

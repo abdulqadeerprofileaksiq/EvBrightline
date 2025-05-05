@@ -1,14 +1,23 @@
+// Core React imports
 import React, { useState } from "react";
-import { useToast } from "../../context/toastContext/ToastContext";
 import { View, Image, ScrollView, StyleSheet, TouchableOpacity } from "react-native";
+import { SafeAreaView } from "react-native-safe-area-context";
+import { useRouter } from "expo-router";
+
+// Styling
 import { ScaledSheet } from "react-native-size-matters";
 import { COLOR } from "../../constants/colors";
+
+// Components
 import HeadingText from "../../components/global/HeadingText";
 import RegularText from "../../components/global/RegularText";
 import InputComponent from "../../components/global/Input";
 import LoginButton from "../../components/global/Button";
-import { useRouter } from "expo-router";
 
+// Context
+import { useToast } from "../../context/toastContext/ToastContext";
+
+// Assets
 import Logo from "../../assets/images/EV_Logodark.png";
 import GoogleIcon from "../../assets/images/social/google.png";
 import AppleIcon from "../../assets/images/social/apple.png";
@@ -49,91 +58,97 @@ const LoginScreen = () => {
   const handleRegister = () => router.navigate("/registerScreen");
 
   return (
-    <View style={styles.container}>
-      <ScrollView showsVerticalScrollIndicator={false} contentContainerStyle={styles.scrollContent}>
-        <View style={styles.mainContentContainer}>
-          <View style={styles.logoHeader}>
-            <Image source={Logo} style={styles.logoImage} resizeMode="contain" />
-          </View>
-          <HeadingText text="Welcome! Glad to See You Again!" textStyles={styles.heading} />
-          <View style={styles.formContainer}>
-            {/* Form inputs */}
-            <InputComponent
-              label="Username"
-              placeholder="Enter your username"
-              value={username}
-              onChangeText={handleUsernameChange}
-              containerStyle={styles.inputContainer}
-            />
-            <InputComponent
-              label="Password"
-              placeholder="Enter your password"
-              value={password}
-              onChangeText={(text) => {
-                setPassword(text);
-                setLoginError("");
-              }}
-              secureTextEntry={true}
-              showPasswordToggle={true}
-              containerStyle={styles.inputContainer}
-            />
-            
-            {/* Forgot password link */}
-            <TouchableOpacity
-              style={styles.forgotPasswordContainer}
-              onPress={() => router.navigate("/forgotPasswordScreen")}
-            >
-              <RegularText text="Forgot Password?" textStyles={styles.forgotPasswordText} />
-            </TouchableOpacity>
-            
-            {/* Error message */}
-            {loginError ? (
-              <View style={styles.errorContainer}>
-                <RegularText text={loginError} textStyles={styles.errorText} />
-              </View>
-            ) : null}
-            
-            {/* Login button */}
-            <LoginButton
-              style={styles.btn}
-              title="Log In"
-              onPress={handleLogin}
-              isLoading={isLoading}
-            />
-            
-            {/* Social login options */}
-            <View style={styles.socialLoginContainer}>
-              <View style={styles.dividerContainer}>
-                <View style={styles.divider} />
-                <RegularText text="Or login with" textStyles={styles.dividerText} />
-                <View style={styles.divider} />
-              </View>
-              <View style={styles.socialButtonsRow}>
-                <TouchableOpacity style={styles.socialButton}>
-                  <Image source={GoogleIcon} style={styles.socialIcon} resizeMode="contain" />
-                </TouchableOpacity>
-                <View style={styles.socialButtonGap} />
-                <TouchableOpacity style={styles.socialButton}>
-                  <Image source={AppleIcon} style={styles.socialIcon} resizeMode="contain" />
-                </TouchableOpacity>
+    <SafeAreaView style={styles.safeArea}>
+      <View style={styles.container}>
+        <ScrollView showsVerticalScrollIndicator={false} contentContainerStyle={styles.scrollContent}>
+          <View style={styles.mainContentContainer}>
+            <View style={styles.logoHeader}>
+              <Image source={Logo} style={styles.logoImage} resizeMode="contain" />
+            </View>
+            <HeadingText text="Welcome! Glad to See You Again!" textStyles={styles.heading} />
+            <View style={styles.formContainer}>
+              {/* Form inputs */}
+              <InputComponent
+                label="Username"
+                placeholder="Enter your username"
+                value={username}
+                onChangeText={handleUsernameChange}
+                containerStyle={styles.inputContainer}
+              />
+              <InputComponent
+                label="Password"
+                placeholder="Enter your password"
+                value={password}
+                onChangeText={(text) => {
+                  setPassword(text);
+                  setLoginError("");
+                }}
+                secureTextEntry={true}
+                showPasswordToggle={true}
+                containerStyle={styles.inputContainer}
+              />
+              
+              {/* Forgot password link */}
+              <TouchableOpacity
+                style={styles.forgotPasswordContainer}
+                onPress={() => router.navigate("/forgotPasswordScreen")}
+              >
+                <RegularText text="Forgot Password?" textStyles={styles.forgotPasswordText} />
+              </TouchableOpacity>
+              
+              {/* Error message */}
+              {loginError ? (
+                <View style={styles.errorContainer}>
+                  <RegularText text={loginError} textStyles={styles.errorText} />
+                </View>
+              ) : null}
+              
+              {/* Login button */}
+              <LoginButton
+                style={styles.btn}
+                title="Log In"
+                onPress={handleLogin}
+                isLoading={isLoading}
+              />
+              
+              {/* Social login options */}
+              <View style={styles.socialLoginContainer}>
+                <View style={styles.dividerContainer}>
+                  <View style={styles.divider} />
+                  <RegularText text="Or login with" textStyles={styles.dividerText} />
+                  <View style={styles.divider} />
+                </View>
+                <View style={styles.socialButtonsRow}>
+                  <TouchableOpacity style={styles.socialButton}>
+                    <Image source={GoogleIcon} style={styles.socialIcon} resizeMode="contain" />
+                  </TouchableOpacity>
+                  <View style={styles.socialButtonGap} />
+                  <TouchableOpacity style={styles.socialButton}>
+                    <Image source={AppleIcon} style={styles.socialIcon} resizeMode="contain" />
+                  </TouchableOpacity>
+                </View>
               </View>
             </View>
           </View>
+        </ScrollView>
+        
+        {/* Bottom signup prompt */}
+        <View style={styles.signupContainer}>
+          <RegularText text="Don't have an account? " textStyles={styles.signupText} />
+          <TouchableOpacity onPress={handleRegister}>
+            <RegularText text="Register Now" textStyles={styles.signupLink} />
+          </TouchableOpacity>
         </View>
-      </ScrollView>
-      
-      {/* Bottom signup prompt */}
-      <View style={styles.signupContainer}>
-        <RegularText text="Don't have an account? " textStyles={styles.signupText} />
-        <TouchableOpacity onPress={handleRegister}>
-          <RegularText text="Register Now" textStyles={styles.signupLink} />
-        </TouchableOpacity>
       </View>
-    </View>
+    </SafeAreaView>
   );
 };
 
 const styles = ScaledSheet.create({
+  safeArea: {
+    flex: 1,
+    backgroundColor: COLOR.white,
+  },
   container: {
     flex: 1,
     backgroundColor: COLOR.white,

@@ -1,15 +1,19 @@
+// Core React imports
 import React, { useState, useEffect } from "react";
 import { View, TouchableOpacity, TextInput, FlatList, Image } from "react-native";
-import { ScaledSheet } from "react-native-size-matters";
-import { COLOR } from "../../constants/colors";
-import { MaterialIcons } from "@expo/vector-icons"; 
+import { SafeAreaView } from 'react-native-safe-area-context';
 import { useRouter } from "expo-router";
+
+// UI and styling
+import { ScaledSheet } from "react-native-size-matters";
+import { MaterialIcons } from "@expo/vector-icons";
+import { COLOR } from "../../constants/colors"; 
+
+// Components
 import StationsData from "../../components/bottom_sheets/StationsData/StationsData";
-import HeadingText from "../../components/global/HeadingText";
-import RegularText from "../../components/global/RegularText";
 import NoResult from "../../components/global/NoResult";
 
-// Import assets
+// Assets
 import BackIcon from "../../assets/images/back.png";
 import SearchIcon from "../../assets/images/bottom_sheets/search.png";
 import NoResultIcon from "../../assets/images/noresult.png";
@@ -93,55 +97,61 @@ const SearchScreen = () => {
   };
 
   return (
-    <View style={styles.container}>
-      <View style={styles.headerRow}>
-        <TouchableOpacity style={styles.backButton} onPress={handleBackPress}>
-          <Image source={BackIcon} style={styles.backIcon} />
-        </TouchableOpacity>
-        <View style={styles.searchContainer}>
-          <Image source={SearchIcon} style={styles.searchIcon} resizeMode="contain" />
-          <TextInput
-            style={styles.searchInput}
-            placeholder="Find a station"
-            placeholderTextColor={COLOR.mediumGray}
-            value={searchText}
-            onChangeText={setSearchText}
-          />
-          {searchText.length > 0 && (
-            <TouchableOpacity onPress={handleClearSearch}>
-              <MaterialIcons name="close" size={16} color={COLOR.darkGray} style={styles.crossIcon} />
-            </TouchableOpacity>
-          )}
+    <SafeAreaView style={styles.safeArea}>
+      <View style={styles.container}>
+        <View style={styles.headerRow}>
+          <TouchableOpacity style={styles.backButton} onPress={handleBackPress}>
+            <Image source={BackIcon} style={styles.backIcon} />
+          </TouchableOpacity>
+          <View style={styles.searchContainer}>
+            <Image source={SearchIcon} style={styles.searchIcon} resizeMode="contain" />
+            <TextInput
+              style={styles.searchInput}
+              placeholder="Find a station"
+              placeholderTextColor={COLOR.mediumGray}
+              value={searchText}
+              onChangeText={setSearchText}
+            />
+            {searchText.length > 0 && (
+              <TouchableOpacity onPress={handleClearSearch}>
+                <MaterialIcons name="close" size={16} color={COLOR.darkGray} style={styles.crossIcon} />
+              </TouchableOpacity>
+            )}
+          </View>
         </View>
+        
+        {/* Show stations only when user has searched and there are results */}
+        {hasSearched && filteredStations.length > 0 && (
+          <FlatList
+            data={filteredStations}
+            keyExtractor={(item) => item.id}
+            renderItem={({ item }) => <StationsData stationData={item} />}
+            showsVerticalScrollIndicator={false}
+            contentContainerStyle={styles.stationList}
+          />
+        )}
+        
+        {/* Using the NoResult component when user has searched but there are no matches */}
+        {hasSearched && filteredStations.length === 0 && (
+          <NoResult 
+            image={NoResultIcon}
+            title="Oops! No Matching Results"
+            message="We couldn't find the station you were looking for. Please check for spelling errors or try again."
+          />
+        )}
+        
+        {/* Show nothing when user hasn't searched yet */}
+        {!hasSearched && <View style={styles.emptySpace} />}
       </View>
-      
-      {/* Show stations only when user has searched and there are results */}
-      {hasSearched && filteredStations.length > 0 && (
-        <FlatList
-          data={filteredStations}
-          keyExtractor={(item) => item.id}
-          renderItem={({ item }) => <StationsData stationData={item} />}
-          showsVerticalScrollIndicator={false}
-          contentContainerStyle={styles.stationList}
-        />
-      )}
-      
-      {/* Using the NoResult component when user has searched but there are no matches */}
-      {hasSearched && filteredStations.length === 0 && (
-        <NoResult 
-          image={NoResultIcon}
-          title="Oops! No Matching Results"
-          message="We couldn't find the station you were looking for. Please check for spelling errors or try again."
-        />
-      )}
-      
-      {/* Show nothing when user hasn't searched yet */}
-      {!hasSearched && <View style={styles.emptySpace} />}
-    </View>
+    </SafeAreaView>
   );
 };
 
 const styles = ScaledSheet.create({
+  safeArea: {
+    flex: 1,
+    backgroundColor: COLOR.white,
+  },
   container: {
     flex: 1,
     backgroundColor: COLOR.white,

@@ -1,19 +1,30 @@
 import React, { useState } from 'react';
-import { Text, View, SafeAreaView, Image, useWindowDimensions, StatusBar, TouchableOpacity } from 'react-native';
-import { ScaledSheet, scale, } from 'react-native-size-matters';
-import { COLOR } from '../../constants/colors';
-import Logo from "../../assets/images/EV_Logodark.png";
+import { 
+  Text, 
+  View, 
+  Image, 
+  useWindowDimensions, 
+  TouchableOpacity 
+} from 'react-native';
+import { SafeAreaView } from 'react-native-safe-area-context';
+import { StatusBar } from 'expo-status-bar';
+import { ScaledSheet, scale } from 'react-native-size-matters';
+import { useRouter } from 'expo-router';
 import FontAwesome5 from '@expo/vector-icons/FontAwesome5';
-import CarVector from "../../assets/images/homeimg/carmodel.png";
-import CarCharging from "../../assets/images/homeimg/vectorCar.png";
+
+import { COLOR } from '../../constants/colors';
 import HomeBottomSheet from '../../components/bottom_sheets/home_sheet/Homebottomsheet';
 import RegularText from '../../components/global/RegularText';
-import { useRouter } from 'expo-router'; // Add router import
+
+// Assets
+import Logo from "../../assets/images/EV_Logodark.png";
+import CarVector from "../../assets/images/homeimg/carmodel.png";
+import CarCharging from "../../assets/images/homeimg/vectorCar.png";
 
 const Home = () => {
   const [bottomSheetVisible, setBottomSheetVisible] = useState(true);
   const { width, height } = useWindowDimensions();
-  const router = useRouter(); // Add router import
+  const router = useRouter();
 
   const isLandscape = width > height;
   const boxWidth = isLandscape ? width * 0.5 - scale(16) : width - scale(32);
@@ -24,9 +35,9 @@ const Home = () => {
   };
 
   return (
-    <>
-      <StatusBar backgroundColor={COLOR.white} barStyle="dark-content" />
-      <SafeAreaView style={styles.container}>
+    <SafeAreaView style={styles.safeArea}>
+      <StatusBar style="dark"/>
+      <View style={styles.container}>
         <View style={styles.headerSection}>
           <View style={styles.header}>
             <Image source={Logo} style={styles.logoImage} />
@@ -69,12 +80,16 @@ const Home = () => {
           </View>
         </View>
         <HomeBottomSheet onClose={() => setBottomSheetVisible(false)} />
-      </SafeAreaView>
-    </>
+      </View>
+    </SafeAreaView>
   );
 };
 
 const styles = ScaledSheet.create({
+  safeArea: {
+    flex: 1,
+    backgroundColor: COLOR.white,
+  },
   container: {
     flex: 1,
     backgroundColor: COLOR.white,

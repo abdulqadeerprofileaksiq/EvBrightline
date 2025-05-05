@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
-import { View, TouchableOpacity, SafeAreaView } from 'react-native';
+import { View, TouchableOpacity } from 'react-native';
+import { SafeAreaView } from 'react-native-safe-area-context';
 import { ScaledSheet } from 'react-native-size-matters';
 import { COLOR } from '../../constants/colors';
 import Header from '../../components/global/Header';

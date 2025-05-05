@@ -1,4 +1,3 @@
-// #region Imports
 import React, { useState, useMemo, useCallback } from "react";
 import {
   View,
@@ -21,11 +20,9 @@ import InputComponent from "../../components/global/Input";
 import LoginButton from "../../components/global/Button";
 import DropDown from "../../components/global/DropDown";
 import countryList from 'react-select-country-list';
-import { Entypo } from '@expo/vector-icons'; // Keep only Entypo for the dots
+import { Entypo } from '@expo/vector-icons';
 import Header from "./Header";
 
-// Import assets
-// Import payment assets
 import CreditCardIcon from "../../assets/images/payment/creditcard.png";
 import AfterPayIcon from "../../assets/images/payment/Afterpay.png";
 import KlarnaIcon from "../../assets/images/payment/klarna.png";
@@ -33,16 +30,10 @@ import VisaIcon from "../../assets/images/payment/visa.png";
 import MastercardIcon from "../../assets/images/payment/mastercard.png";
 import PaypalIcon from "../../assets/images/payment/paypal.png";
 import CVVIcon from "../../assets/images/payment/cvv.png";
-// #endregion
 
-const PaymentScreen = ({ 
-  onBack,
-  showSkip = true,      // Control skip button visibility
-  showHeader = true,    // Control header visibility
-  headerTitle = ""
-}) => {
+const PaymentScreen = () => {
   const router = useRouter();
-  // #region State Management
+  
   const [fullName, setFullName] = useState("");
   const [country, setCountry] = useState("");
   const [address, setAddress] = useState("");
@@ -51,9 +42,7 @@ const PaymentScreen = ({
   const [expiryDate, setExpiryDate] = useState("");
   const [securityCode, setSecurityCode] = useState("");
   const [isLoading, setIsLoading] = useState(false);
-  // #endregion
 
-  // #region Data Options
   const countryOptions = useMemo(() => {
     return countryList().getData().filter(country => 
       country && country.label && country.value
@@ -62,9 +51,7 @@ const PaymentScreen = ({
       label: country.label
     }));
   }, []);
-  // #endregion
 
-  // #region Search Handling
   const filterCountries = useCallback((item, query) => {
     if (query === undefined || query === '') return true;
     
@@ -73,9 +60,7 @@ const PaymentScreen = ({
     
     return lowercaseLabel.includes(lowercaseQuery);
   }, []);
-  // #endregion
 
-  // #region Handlers
   const handleAddPayment = () => {
     setIsLoading(true);
     setTimeout(() => {
@@ -92,11 +77,7 @@ const PaymentScreen = ({
   };
   
   const handleBack = () => {
-    if (onBack) {
-      onBack();
-    } else {
-      router.back();
-    }
+    router.back();
   };
 
   const handleSelectPaymentMethod = (method) => {
@@ -117,26 +98,19 @@ const PaymentScreen = ({
     }
     setExpiryDate(formatted.slice(0, 5));
   };
-  // #endregion
 
-  // #region Render
   return (
     <View style={styles.container}>
-      {/* Header */}
-      {showHeader && (
-          <Header 
-            text={headerTitle}
-            onBack={handleBack}
-          />
-        )}
+      <Header 
+        text=""
+        onBack={handleBack}
+      />
       <ScrollView 
         showsVerticalScrollIndicator={false}
         contentContainerStyle={styles.scrollContent}
         keyboardShouldPersistTaps="handled"
         bounces={false}
       >        
-
-        {/* Heading Section */}
         <View style={styles.headingContainer}>
           <HeadingText
             text="Link Payment Method"
@@ -148,7 +122,6 @@ const PaymentScreen = ({
           />
         </View>
 
-        {/* Form Section */}
         <View style={styles.formContainer}>
           <InputComponent
             label="Full name*"
@@ -176,7 +149,6 @@ const PaymentScreen = ({
             containerStyle={styles.formElement}
           />
 
-          {/* Payment Method Selection */}
           <View style={styles.paymentMethodContainer}>
             <View style={styles.paymentOptionsRow}>
               <TouchableOpacity 
@@ -239,7 +211,6 @@ const PaymentScreen = ({
             </View>
           </View>
 
-          {/* Card Details */}
           <View style={styles.cardDetailsContainer}>
             <View style={styles.cardInputContainer}>
               <InputComponent
@@ -283,7 +254,6 @@ const PaymentScreen = ({
           </View>
         </View>
 
-        {/* Action Buttons */}
         <View style={styles.buttonContainer}>
           <LoginButton
             style={styles.addButton}
@@ -292,24 +262,20 @@ const PaymentScreen = ({
             isLoading={isLoading}
           />
           
-          {showSkip && (
-            <View style={styles.skipButtonWrapper}>
-              <TouchableOpacity onPress={handleSkip}>
-                <RegularText
-                  text="Skip for now"
-                  textStyles={styles.skipButtonText}
-                />
-              </TouchableOpacity>
-            </View>
-          )}
+          <View style={styles.skipButtonWrapper}>
+            <TouchableOpacity onPress={handleSkip}>
+              <RegularText
+                text="Skip for now"
+                textStyles={styles.skipButtonText}
+              />
+            </TouchableOpacity>
+          </View>
         </View>
       </ScrollView>
     </View>
   );
-  // #endregion
 };
 
-// #region Styles
 const styles = StyleSheet.create({
   container: {
     flex: 1,
@@ -325,7 +291,8 @@ const styles = StyleSheet.create({
   },
   headingText: {
     textAlign: "left",
-    marginBottom: moderateVerticalScale(8),
+    marginBottom: moderateVerticalScale(5),
+    marginTop: moderateVerticalScale(20),
   },
   subHeadingText: {
     textAlign: "left",
@@ -443,6 +410,5 @@ const styles = StyleSheet.create({
     fontFamily: "Urbanist-SemiBold",
   },
 });
-// #endregion
 
 export default PaymentScreen;

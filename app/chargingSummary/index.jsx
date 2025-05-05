@@ -1,5 +1,6 @@
 import React, { useCallback, useState } from 'react'
 import { Text, View, ScrollView } from 'react-native'
+import { SafeAreaView } from 'react-native-safe-area-context'
 import Header from '../../components/global/Header'
 import { ScaledSheet } from 'react-native-size-matters'
 import SlideButoon from '../../components/global/SlideButoon'
@@ -25,111 +26,115 @@ const index = () => {
   }, [chargingCost]);
 
   return (
-    <>
-    <Header text="Charging Summary" dark={false} />
-    <View style={styles.container}>
-      <ScrollView 
-        showsVerticalScrollIndicator={false}
-        contentContainerStyle={styles.scrollContainer}
-      >      
-        <View style={styles.contentContainer}>
-          {/* Vehicle Information Section */}
-          <View style={styles.section}>
-            <HeadingText text="Vehicle Information" textStyles={styles.sectionTitle} />
-            <View style={styles.infoRow}>
-              <RegularText text="Brand" textStyles={styles.infoLabel} />
-              <HeadingText text="Tesla" textStyles={styles.infoValue} />
-            </View>
-            <View style={styles.infoRow}>
-              <RegularText text="Model" textStyles={styles.infoLabel} />
-              <HeadingText text="Model3" textStyles={styles.infoValue} />
-            </View>
-            <View style={styles.infoRow}>
-              <RegularText text="Battery Capacity Range" textStyles={styles.infoLabel} />
-              <HeadingText text="120 km/h" textStyles={styles.infoValue} />
-            </View>
-            <View style={styles.infoRow}>
-              <RegularText text="Connector Type" textStyles={styles.infoLabel} />
-              <HeadingText text="Type-C" textStyles={styles.infoValue} />
-            </View>
-            <View style={styles.infoRow}>
-              <RegularText text="License Plate No." textStyles={styles.infoLabel} />
-              <HeadingText text="M-M 4919 RQN" textStyles={styles.infoValue} />
-            </View>
-          </View>
-
-          {/* Station Information Section */}
-          <View style={styles.section}>
-            <HeadingText text="Station Information" textStyles={styles.sectionTitle} />
-            <View style={styles.infoRow}>
-              <RegularText text="Station Name" textStyles={styles.infoLabel} />
-              <HeadingText text="Veen Charging Station" textStyles={styles.infoValue} />
-            </View>
-            <View style={styles.infoRow}>
-              <RegularText text="Location" textStyles={styles.infoLabel} />
-              <HeadingText text={"Colorado 8120, United\nStates"} textStyles={styles.infoValue} />
-            </View>
-          </View>
-
-          {/* Charging Information Section */}
-          <View style={styles.section}>
-            <HeadingText text="Charging Information" textStyles={styles.sectionTitle} />
-            <View style={styles.infoRow}>
-              <RegularText text="Charging Port Number" textStyles={styles.infoLabel} />
-              <HeadingText text="4" textStyles={styles.infoValue} />
-            </View>
-            <View style={styles.infoRow}>
-              <RegularText text="Start Charging" textStyles={styles.infoLabel} />
-              <HeadingText text="24/02/25 11:30 Am" textStyles={styles.infoValue} />
-            </View>
-            <View style={styles.infoRow}>
-              <RegularText text="End Charging" textStyles={styles.infoLabel} />
-              <HeadingText text="24/02/25 01:00 Pm" textStyles={styles.infoValue} />
-            </View>
-            <View style={styles.infoRow}>
-              <RegularText text="Usage (kWh)" textStyles={styles.infoLabel} />
-              <HeadingText text="50.25 kWh" textStyles={styles.infoValue} />
-            </View>
-            <View style={styles.infoRow}>
-              <RegularText text="Charging Cost" textStyles={styles.infoLabel} />
-              <HeadingText text={chargingCost} textStyles={styles.infoValue} />
-            </View>
-            <View style={styles.infoRow}>
-              <RegularText text="Payment Method" textStyles={styles.infoLabel} />
-              <View style={styles.cardInfoContainer}>
-                <HeadingText text="Master Card" textStyles={styles.infoValue} />
-                <RegularText text="**** **** **** 1592" textStyles={styles.cardNumber} />
+    <SafeAreaView style={styles.safeArea}>
+      <Header text="Charging Summary" dark={false} />
+      <View style={styles.container}>
+        <ScrollView 
+          showsVerticalScrollIndicator={false}
+          contentContainerStyle={styles.scrollContainer}
+        >      
+          <View style={styles.contentContainer}>
+            {/* Vehicle Information Section */}
+            <View style={styles.section}>
+              <HeadingText text="Vehicle Information" textStyles={styles.sectionTitle} />
+              <View style={styles.infoRow}>
+                <RegularText text="Brand" textStyles={styles.infoLabel} />
+                <HeadingText text="Tesla" textStyles={styles.infoValue} />
+              </View>
+              <View style={styles.infoRow}>
+                <RegularText text="Model" textStyles={styles.infoLabel} />
+                <HeadingText text="Model3" textStyles={styles.infoValue} />
+              </View>
+              <View style={styles.infoRow}>
+                <RegularText text="Battery Capacity Range" textStyles={styles.infoLabel} />
+                <HeadingText text="120 km/h" textStyles={styles.infoValue} />
+              </View>
+              <View style={styles.infoRow}>
+                <RegularText text="Connector Type" textStyles={styles.infoLabel} />
+                <HeadingText text="Type-C" textStyles={styles.infoValue} />
+              </View>
+              <View style={styles.infoRow}>
+                <RegularText text="License Plate No." textStyles={styles.infoLabel} />
+                <HeadingText text="M-M 4919 RQN" textStyles={styles.infoValue} />
               </View>
             </View>
-          </View>
 
-          {/* Total Cost Section */}
-          <View style={styles.totalSection}>
-            <HeadingText text="Total Cost" textStyles={styles.totalLabel} />
-            <View style={styles.totalValueRow}>
-              <HeadingText text={chargingCost} textStyles={styles.totalValue} />
-              <Text style={styles.totalVia}>via</Text>
-              <Text style={styles.totalStripe}>stripe</Text>
+            {/* Station Information Section */}
+            <View style={styles.section}>
+              <HeadingText text="Station Information" textStyles={styles.sectionTitle} />
+              <View style={styles.infoRow}>
+                <RegularText text="Station Name" textStyles={styles.infoLabel} />
+                <HeadingText text="Veen Charging Station" textStyles={styles.infoValue} />
+              </View>
+              <View style={styles.infoRow}>
+                <RegularText text="Location" textStyles={styles.infoLabel} />
+                <HeadingText text={"Colorado 8120, United\nStates"} textStyles={styles.infoValue} />
+              </View>
             </View>
-          </View>
-        </View>     
-      
-      {/* Add slide button at the bottom */}
-      <View style={styles.slideButtonContainer}>
-        <SlideButoon 
-          title="Slide to make payment"
-          onComplete={handlePaymentComplete}
-        />
+
+            {/* Charging Information Section */}
+            <View style={styles.section}>
+              <HeadingText text="Charging Information" textStyles={styles.sectionTitle} />
+              <View style={styles.infoRow}>
+                <RegularText text="Charging Port Number" textStyles={styles.infoLabel} />
+                <HeadingText text="4" textStyles={styles.infoValue} />
+              </View>
+              <View style={styles.infoRow}>
+                <RegularText text="Start Charging" textStyles={styles.infoLabel} />
+                <HeadingText text="24/02/25 11:30 Am" textStyles={styles.infoValue} />
+              </View>
+              <View style={styles.infoRow}>
+                <RegularText text="End Charging" textStyles={styles.infoLabel} />
+                <HeadingText text="24/02/25 01:00 Pm" textStyles={styles.infoValue} />
+              </View>
+              <View style={styles.infoRow}>
+                <RegularText text="Usage (kWh)" textStyles={styles.infoLabel} />
+                <HeadingText text="50.25 kWh" textStyles={styles.infoValue} />
+              </View>
+              <View style={styles.infoRow}>
+                <RegularText text="Charging Cost" textStyles={styles.infoLabel} />
+                <HeadingText text={chargingCost} textStyles={styles.infoValue} />
+              </View>
+              <View style={styles.infoRow}>
+                <RegularText text="Payment Method" textStyles={styles.infoLabel} />
+                <View style={styles.cardInfoContainer}>
+                  <HeadingText text="Master Card" textStyles={styles.infoValue} />
+                  <RegularText text="**** **** **** 1592" textStyles={styles.cardNumber} />
+                </View>
+              </View>
+            </View>
+
+            {/* Total Cost Section */}
+            <View style={styles.totalSection}>
+              <HeadingText text="Total Cost" textStyles={styles.totalLabel} />
+              <View style={styles.totalValueRow}>
+                <HeadingText text={chargingCost} textStyles={styles.totalValue} />
+                <Text style={styles.totalVia}>via</Text>
+                <Text style={styles.totalStripe}>stripe</Text>
+              </View>
+            </View>
+          </View>     
+        
+        {/* Add slide button at the bottom */}
+        <View style={styles.slideButtonContainer}>
+          <SlideButoon 
+            title="Slide to make payment"
+            onComplete={handlePaymentComplete}
+          />
+        </View>
+        </ScrollView>
       </View>
-      </ScrollView>
-    </View>
-    </>
+    </SafeAreaView>
   )
 }
 
 export default index
 
 const styles = ScaledSheet.create({
+  safeArea: {
+    flex: 1,
+    backgroundColor: 'white',
+  },
   container: {
     flex: 1,
     backgroundColor: 'white',

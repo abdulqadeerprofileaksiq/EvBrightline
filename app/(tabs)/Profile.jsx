@@ -1,5 +1,6 @@
 import React, { useContext } from 'react';
-import { View, Text, Image, StyleSheet, TouchableOpacity, SafeAreaView, ScrollView } from 'react-native';
+import { View, Text, Image, StyleSheet, TouchableOpacity, ScrollView } from 'react-native';
+import { SafeAreaView } from 'react-native-safe-area-context';
 import { ScaledSheet } from 'react-native-size-matters';
 import { Ionicons, FontAwesome5, MaterialIcons, MaterialCommunityIcons, Feather } from '@expo/vector-icons';
 import COLOR from '../../constants/colors';
@@ -126,46 +127,52 @@ const Profile = () => {
   };
 
   return (
-    <View style={styles.container}>
-      <ScrollView 
-        style={styles.scrollView}
-        showsVerticalScrollIndicator={false}
-      >
-        {/* Profile Section */}
-        <TouchableOpacity style={styles.profileSection}>
-          <View style={styles.profileContent}>
-            <Image
-              source={require('../../assets/images/profile-pic.jpg')} 
-              style={styles.profileImage}
-            />
-            <View style={styles.profileInfo}>
-            <HeadingText text="John Author" textStyles={styles.profileName} />
-            <RegularText text="johnauthor@gmail.com" textStyles={styles.profileEmail} />
+    <SafeAreaView style={styles.safeArea}>
+      <View style={styles.container}>
+        <ScrollView 
+          style={styles.scrollView}
+          showsVerticalScrollIndicator={false}
+        >
+          {/* Profile Section */}
+          <TouchableOpacity style={styles.profileSection}>
+            <View style={styles.profileContent}>
+              <Image
+                source={require('../../assets/images/profile-pic.jpg')} 
+                style={styles.profileImage}
+              />
+              <View style={styles.profileInfo}>
+              <HeadingText text="John Author" textStyles={styles.profileName} />
+              <RegularText text="johnauthor@gmail.com" textStyles={styles.profileEmail} />
+              </View>
             </View>
-          </View>
-          <TouchableOpacity 
-            style={styles.editButton} 
-            onPress={() => {
-              // Using a different navigation approach
-              router.navigate('/editProfile');
-              // Alternatively, you could use this approach:
-              // router.replace('/editProfile');
-            }}
-          >
-            <Feather name="edit-2" size={18} color="#F9AD5A" />
+            <TouchableOpacity 
+              style={styles.editButton} 
+              onPress={() => {
+                // Using a different navigation approach
+                router.navigate('/editProfile');
+                // Alternatively, you could use this approach:
+                // router.replace('/editProfile');
+              }}
+            >
+              <Feather name="edit-2" size={18} color="#F9AD5A" />
+            </TouchableOpacity>
           </TouchableOpacity>
-        </TouchableOpacity>
 
-        {/* Menu Items */}
-        <View style={styles.menuContainer}>
-          {menuItems.map(renderMenuItem)}
-        </View>
-      </ScrollView>
-    </View>
+          {/* Menu Items */}
+          <View style={styles.menuContainer}>
+            {menuItems.map(renderMenuItem)}
+          </View>
+        </ScrollView>
+      </View>
+    </SafeAreaView>
   );
 };
 
 const styles = ScaledSheet.create({
+  safeArea: {
+    flex: 1,
+    backgroundColor: '#fff',
+  },
   container: {
     flex: 1,
     backgroundColor: '#fff',

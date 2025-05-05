@@ -1,5 +1,5 @@
 import React from 'react';
-import { View, Image, SafeAreaView, ScrollView, StatusBar,TouchableOpacity } from 'react-native';
+import { View, Image, ScrollView, StatusBar, TouchableOpacity } from 'react-native';
 import { ScaledSheet } from 'react-native-size-matters';
 import { Ionicons, MaterialCommunityIcons, MaterialIcons, FontAwesome5 } from '@expo/vector-icons';
 import HeadingText from '../../components/global/HeadingText';
@@ -12,11 +12,9 @@ const ChargingStationDetailScreen = () => {
   const router = useRouter();
 
   return (
-    <SafeAreaView style={styles.container}>
-      <StatusBar style="dark" />
-      <ScrollView style={styles.scrollView}>
-        {/* Header Image */}
-        <View style={styles.imageContainer}>
+    <View style={styles.container}>
+       {/* Header Image */}
+       <View style={styles.imageContainer}>
           <Image
             source={require('../../assets/images/bottom_sheets/station.png')}
             style={styles.headerImage}
@@ -28,6 +26,8 @@ const ChargingStationDetailScreen = () => {
             <Header dark={true} transparent={true} />
           </View>
         </View>
+      <ScrollView style={styles.scrollView}>
+       
 
         {/* Station Info */}
         <View style={styles.infoContainer}>
@@ -92,13 +92,14 @@ const ChargingStationDetailScreen = () => {
             </View>
           </View>
         </View>
-         {/* Direction Button */}
-      <TouchableOpacity style={styles.directionButton}>
-        <RegularText text="Direction" textStyles={styles.directionButtonText} />
-        <FontAwesome5 name="location-arrow" size={16} color="#fff" />
-      </TouchableOpacity>
-         </ScrollView>     
-    </SafeAreaView>
+        
+        {/* Direction Button */}
+        <TouchableOpacity style={styles.directionButton}>
+          <RegularText text="Direction" textStyles={styles.directionButtonText} />
+          <FontAwesome5 name="location-arrow" size={16} color="#fff" />
+        </TouchableOpacity>
+      </ScrollView>
+    </View>
   );
 };
 

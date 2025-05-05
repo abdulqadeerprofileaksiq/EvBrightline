@@ -27,6 +27,7 @@ const Header = ({
   };
   
   return (
+    
     <View style={[
       styles.headerContainer,
       transparent && styles.transparentHeader
@@ -68,6 +69,7 @@ const styles = ScaledSheet.create({
     justifyContent: 'space-between',
     paddingHorizontal: '16@s',
     backgroundColor: 'white',
+    zIndex: 5,
   },
   backIcon: {
     width: '41@ms',
